@@ -24,20 +24,20 @@ class Siesta
                          end
     @parah = { 'PAO.BasisSize' => 'DZP',
                'PAO.EnergyShift' => '50 meV',
-               'Mesh.Cutoff' => '300 Ry',
                'WriteMullikenPop' => 1,
                'WriteCoorXmol' => true,
-               'DM.MixingWeight' => 0.02,
+               'DM.MixingWeight' => 0.01,
                'DM.NumberPulay' => 5,
                'DM.UseSaveDM' => true,
                'DM.Tolerance' => 0.0001,
                'MaxSCFIterations' => 2000,
                'SCF.H.Converge' => true,
-               'SCF.H.Tolerance' => '10 meV',
-               'ElectronicTemperature' => '300 K',
+               'SCF.H.Tolerance' => '1.0 meV',
                'OccupationFunction' => 'MP',
                'OccupationMPOrder' => 4 }
     xc('PZ')
+    electronic_temperature_in_K(1000)
+    meshcutoff_in_Ry(200)
     @blocks = []
     update_file
   end
@@ -62,6 +62,7 @@ class Siesta
       'VDW' => %w[DRSLL LMKLL KBM C09 BH VV]
     }
 
+    inp_xc = 'PZ' if inp_xc == 'LDA'
     allowed_xc.each do |key, value|
       if value.include?(inp_xc)
         @parah['XC.functional'] = key
@@ -101,6 +102,14 @@ class Siesta
       %endblock kgrid_Monkhorst_Pack
     BLOCK
     @blocks << kgrid
+  end
+  
+  def electronic_temperature_in_K(temp)
+    @parah['ElectronicTemperature']="#{temp} K"
+  end
+
+  def meshcutoff_in_Ry(meshcutoff)
+    @parah['Mesh.Cutoff']="#{meshcutoff} Ry"
   end
 
   def generate_fdf_file(vector: true)
@@ -148,7 +157,12 @@ class Siesta
 
   def run
     generate_fdf_file
-    command = "siesta < #{@fdf_file} > #{@ofile}"
+    user_command = ENV['RUBY_SIESTA_COMMAND']
+    command = if user_command.nil?
+                "siesta < #{@fdf_file} > #{@ofile}"
+              else
+                user_command.gsub(/PREFIX/, @syslabel)
+              end
     system(command)
   end
 
@@ -180,7 +194,7 @@ class Siesta
       puts "#{src_psf} does not exist"
       exit
     end
-    system("ln -s #{src_psf} #{file_path}")
+    File.symlink(src_psf, file_path)
   end
 
   def format_coordinate(xyz)
