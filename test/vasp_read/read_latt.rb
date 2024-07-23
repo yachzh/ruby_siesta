@@ -2,7 +2,7 @@
 
 $LOAD_PATH << '../../lib'
 require 'read_geom'
-solid=ReadGeom.new('slab.STRUCT_OUT')
+solid=ReadGeom.new('slab.vasp')
 # latt_vec =solid.lattice_vectors
 # coord=solid.coordinates
 # cellpar=solid.cell_parameters

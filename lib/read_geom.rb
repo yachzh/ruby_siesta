@@ -55,7 +55,7 @@ class ReadGeom
   # TODO: other types of struct files from vasp & wien2k
 
   def read_vasp_poscar(_file_name)
-    puts 'To be implemented...'
+    raise 'To be implemented...'
   end
 
   def self.chemical_symbol(atomic_number)
