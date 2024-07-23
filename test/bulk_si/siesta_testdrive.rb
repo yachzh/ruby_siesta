@@ -3,6 +3,7 @@
 $LOAD_PATH << '../../lib'
 require 'siesta'
 require 'test/unit'
+require 'pycall'
 
 class TestSiesta < Test::Unit::TestCase
   def test_simple

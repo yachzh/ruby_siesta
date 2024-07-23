@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 require 'cell'
-require 'pycall'
+require 'read_geom'
 require 'data_io'
 
-# write siesta input file
+# call siesta from Ruby
 class Siesta
-  # attr_reader :cryst, :para
-
   def initialize(crystal_structure)
     @syslabel = 'siesta'
     @cryst = crystal_structure
@@ -48,9 +46,7 @@ class Siesta
   end
 
   def self.import_from_file(str_file)
-    atoms = PyCall.import_module('ase.io').read(str_file)
-    cryst = DataIO.atoms2cryst(atoms)
-    new(cryst)
+    new(ReadGeom.new(str_file).cryst)
   end
 
   def xc(inp_xc)
@@ -122,7 +118,7 @@ class Siesta
       file.puts 'AtomicCoordinatesFormat   Ang'
       file.puts '%block ChemicalSpeciesLabel'
       @species_labels.each_with_index do |label, index|
-        atomic_number = get_atomic_number(label)
+        atomic_number = ReadGeom.atomic_number(label)
         file.puts "#{format('%3d', (index + 1))} #{format('%4d', atomic_number)}   #{label}"
         link_psf(label)
       end
@@ -159,7 +155,7 @@ class Siesta
     generate_fdf_file
     user_command = ENV['RUBY_SIESTA_COMMAND']
     command = if user_command.nil?
-                "siesta < #{@fdf_file} > #{@ofile}"
+                "siesta #{@fdf_file} > #{@ofile}"
               else
                 user_command.gsub(/PREFIX/, @syslabel)
               end
@@ -223,95 +219,4 @@ class Siesta
     file.puts '%endblock LatticeParameters', ''
   end
 
-  def get_atomic_number(atom)
-    atomic_numbers = {
-      'H' => 1,
-      'He' => 2,
-      'Li' => 3,
-      'Be' => 4,
-      'B' => 5,
-      'C' => 6,
-      'N' => 7,
-      'O' => 8,
-      'F' => 9,
-      'Ne' => 10,
-      'Na' => 11,
-      'Mg' => 12,
-      'Al' => 13,
-      'Si' => 14,
-      'P' => 15,
-      'S' => 16,
-      'Cl' => 17,
-      'Ar' => 18,
-      'K' => 19,
-      'Ca' => 20,
-      'Sc' => 21,
-      'Ti' => 22,
-      'V' => 23,
-      'Cr' => 24,
-      'Mn' => 25,
-      'Fe' => 26,
-      'Co' => 27,
-      'Ni' => 28,
-      'Cu' => 29,
-      'Zn' => 30,
-      'Ga' => 31,
-      'Ge' => 32,
-      'As' => 33,
-      'Se' => 34,
-      'Br' => 35,
-      'Kr' => 36,
-      'Rb' => 37,
-      'Sr' => 38,
-      'Y' => 39,
-      'Zr' => 40,
-      'Nb' => 41,
-      'Mo' => 42,
-      'Tc' => 43,
-      'Ru' => 44,
-      'Rh' => 45,
-      'Pd' => 46,
-      'Ag' => 47,
-      'Cd' => 48,
-      'In' => 49,
-      'Sn' => 50,
-      'Sb' => 51,
-      'Te' => 52,
-      'I' => 53,
-      'Xe' => 54,
-      'Cs' => 55,
-      'Ba' => 56,
-      'La' => 57,
-      'Ce' => 58,
-      'Pr' => 59,
-      'Nd' => 60,
-      'Pm' => 61,
-      'Sm' => 62,
-      'Eu' => 63,
-      'Gd' => 64,
-      'Tb' => 65,
-      'Dy' => 66,
-      'Ho' => 67,
-      'Er' => 68,
-      'Tm' => 69,
-      'Yb' => 70,
-      'Lu' => 71,
-      'Hf' => 72,
-      'Ta' => 73,
-      'W' => 74,
-      'Re' => 75,
-      'Os' => 76,
-      'Ir' => 77,
-      'Pt' => 78,
-      'Au' => 79,
-      'Hg' => 80,
-      'Tl' => 81,
-      'Pb' => 82,
-      'Bi' => 83,
-      'Po' => 84,
-      'At' => 85,
-      'Rn' => 86
-    }
-    atomic_numbers[atom]
-  end
 end
