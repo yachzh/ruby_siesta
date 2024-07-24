@@ -37,7 +37,8 @@ class DataIO
 
   def self.atoms2cryst(atoms)
     # Extract cell parameters from ASE object
-    cellpar = atoms.cell.cellpar
+    cellpar = to_a(atoms.cell.cellpar).map(&:to_f)
+
     cell_parameters = {
       a: cellpar[0],
       b: cellpar[1],
@@ -48,16 +49,17 @@ class DataIO
     }
 
     # Extract lattice vectors from ASE object
-    lattice_vectors = []
-    3.times { |i| lattice_vectors << to_a(atoms.cell[i]) }
+    latt = []
+    3.times { |i| latt << to_a(atoms.cell[i]) }
+    lattice_vectors = latt.map { |a| a.map(&:to_f) }
 
     # Extract atom coordinates from ASE object
     chem = atoms.get_chemical_symbols.to_a
     coordinates = []
 
     chem.each_with_index do |element, i|
-      position = atoms.positions[i]
-      coordinates << { atom: element, x: position[0], y: position[1], z: position[2] }
+      position = to_a(atoms.positions[i]).map(&:to_f)
+      coordinates << { atom: element.to_s, x: position[0], y: position[1], z: position[2] }
     end
 
     # Create the crystal structure hash

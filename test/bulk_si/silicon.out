@@ -9,7 +9,7 @@ NetCDF support
 NetCDF-4 support
 
 * Running on 4 nodes in parallel
->> Start of run:  22-JUL-2024  18:21:23
+>> Start of run:  24-JUL-2024  21:22:53
 
                            ***********************       
                            *  WELCOME TO SIESTA  *       
@@ -344,18 +344,12 @@ refcount: 1>
 new_DM -- step:     1
 Initializing Density Matrix...
 
-Attempting to read DM from file... Succeeded...
-DM from file:
-<dSpData2D:IO-DM: silicon.DM
-  <sparsity:IO-DM: silicon.DM
-    nrows_g=26 nrows=7 sparsity=17.4216 nnzs=11777, refcount: 1>
-  <dData2D:(new from dSpData2D) n=11777 m=1, refcount: 1>
-refcount: 1>
-DM to be used:
-<dSpData2D:Re-structured SpM
+Attempting to read DM from file... Failed...
+DM filled with atomic data:
+<dSpData2D:DM initialized from atoms
   <sparsity:sparsity for geom step 0
     nrows_g=26 nrows=7 sparsity=17.4216 nnzs=11777, refcount: 8>
-  <dData2D:(new in restruct) n=11777 m=1, refcount: 1>
+  <dData2D:DM n=11777 m=1, refcount: 1>
 refcount: 1>
 No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      35     365
 New grid distribution:   1
@@ -387,34 +381,40 @@ stepf: Methfessel-Paxton step function
        Using Hermite-Gauss polynomials of order  4
 
 siesta: Program's energy decomposition (eV):
-siesta: Ebs     =       -86.264335
+siesta: Ebs     =       -85.579882
 siesta: Eions   =       377.610450
 siesta: Ena     =       115.966558
-siesta: Ekin    =        81.573241
-siesta: Enl     =        27.794322
+siesta: Ekin    =        82.596716
+siesta: Enl     =        28.049713
 siesta: Eso     =         0.000000
 siesta: Edftu   =         0.000000
-siesta: DEna    =         1.233438
-siesta: DUscf   =         0.383669
+siesta: DEna    =         0.169793
+siesta: DUscf   =         0.481645
 siesta: DUext   =         0.000000
-siesta: Exc     =       -64.935739
+siesta: Exc     =       -65.223449
 siesta: eta*DQ  =         0.000000
 siesta: Emadel  =         0.000000
 siesta: Emeta   =         0.000000
 siesta: Emolmec =         0.000000
 siesta: Ekinion =         0.000000
-siesta: Eharris =      -215.594961
-siesta: Etot    =      -215.594961
-siesta: FreeEng =      -215.594960
+siesta: Eharris =      -211.740268
+siesta: Etot    =      -215.569474
+siesta: FreeEng =      -215.569459
 
         iscf     Eharris(eV)        E_KS(eV)     FreeEng(eV)     dDmax    Ef(eV) dHmax(eV)
-   scf:    1     -215.594961     -215.594961     -215.594960  0.000011 -5.449937  0.000010
+   scf:    1     -211.740268     -215.569474     -215.569459  1.726236 -5.973897  0.513516
+timer: Routine,Calls,Time,% = IterSCF        1       1.535  76.03
+   scf:    2     -215.570737     -215.570106     -215.570092  0.001120 -5.968993  0.507033
+   scf:    3     -215.614411     -215.594950     -215.594950  0.082376 -5.450680  0.004776
+   scf:    4     -215.594933     -215.594942     -215.594941  0.000820 -5.261450  0.010050
+   scf:    5     -215.594978     -215.594961     -215.594960  0.003811 -5.449947  0.000031
+mix: Pulay -- inversion failed, > SVD [rank/size] 2 / 4
+   scf:    6     -215.594961     -215.594961     -215.594960  0.000004 -5.449940  0.000031
 
 SCF Convergence by DM+H criterion
-max |DM_out - DM_in|         :     0.0000109102
-max |H_out - H_in|      (eV) :     0.0000102435
-SCF cycle converged after 1 iterations
-timer: Routine,Calls,Time,% = IterSCF        1       1.503  75.47
+max |DM_out - DM_in|         :     0.0000041989
+max |H_out - H_in|      (eV) :     0.0000310883
+SCF cycle converged after 6 iterations
 
 Using DM_out to compute the final energy and forces
 No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      35     365
@@ -452,17 +452,17 @@ mulliken: Qtot =        8.000
 coxmol: Writing XMOL coordinates into file silicon.xyz                                                         
 
 siesta: Program's energy decomposition (eV):
-siesta: Ebs     =       -86.264335
+siesta: Ebs     =       -86.264315
 siesta: Eions   =       377.610450
 siesta: Ena     =       115.966558
-siesta: Ekin    =        81.573241
-siesta: Enl     =        27.794322
+siesta: Ekin    =        81.573308
+siesta: Enl     =        27.794284
 siesta: Eso     =         0.000000
 siesta: Edftu   =         0.000000
-siesta: DEna    =         1.233438
-siesta: DUscf   =         0.383669
+siesta: DEna    =         1.233415
+siesta: DUscf   =         0.383671
 siesta: DUext   =         0.000000
-siesta: Exc     =       -64.935739
+siesta: Exc     =       -64.935749
 siesta: eta*DQ  =         0.000000
 siesta: Emadel  =         0.000000
 siesta: Emeta   =         0.000000
@@ -473,31 +473,31 @@ siesta: Etot    =      -215.594961
 siesta: FreeEng =      -215.594960
 
 siesta: Final energy (eV):
-siesta:  Band Struct. =     -86.264335
-siesta:       Kinetic =      81.573241
-siesta:       Hartree =      14.440067
+siesta:  Band Struct. =     -86.264315
+siesta:       Kinetic =      81.573308
+siesta:       Hartree =      14.440090
 siesta:       Edftu   =       0.000000
 siesta:       Eso     =       0.000000
 siesta:    Ext. field =       0.000000
-siesta:   Exch.-corr. =     -64.935739
-siesta:  Ion-electron =    -112.015082
+siesta:   Exch.-corr. =     -64.935749
+siesta:  Ion-electron =    -112.015162
 siesta:       Ion-ion =    -134.657448
 siesta:       Ekinion =       0.000000
 siesta:         Total =    -215.594961
-siesta:         Fermi =      -5.449937
+siesta:         Fermi =      -5.449940
 
 siesta: Stress tensor (static) (eV/Ang**3):
-siesta:    -0.004035    0.000000    0.000000
-siesta:     0.000000   -0.004035    0.000000
-siesta:     0.000000    0.000000   -0.004035
+siesta:    -0.004034    0.000000    0.000000
+siesta:     0.000000   -0.004034    0.000000
+siesta:     0.000000    0.000000   -0.004034
 
 siesta: Cell volume =         40.025752 Ang**3
 
 siesta: Pressure (static):
 siesta:                Solid            Molecule  Units
 siesta:           0.00004394          0.00004394  Ry/Bohr**3
-siesta:           0.00403453          0.00403453  eV/Ang**3
-siesta:           6.46409862          6.46409862  kBar
+siesta:           0.00403442          0.00403442  eV/Ang**3
+siesta:           6.46392604          6.46392603  kBar
 (Free)E+ p_basis*V_orbitals  =        -213.351560
 (Free)Eharris+ p_basis*V_orbitals  =        -213.351560
 
@@ -508,5 +508,5 @@ cite: which are encouraged to be cited in a published work.
         Primary SIESTA paper
           DOI: www.doi.org/10.1088/0953-8984/14/11/302
 
->> End of run:  22-JUL-2024  18:21:25
+>> End of run:  24-JUL-2024  21:23:01
 Job completed

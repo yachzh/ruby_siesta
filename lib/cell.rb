@@ -36,26 +36,6 @@ module Cell
     beta = Math.acos(a_.dot(c_) / (a * c)) * (180 / Math::PI)
     gamma = Math.acos(a_.dot(b_) / (a * b)) * (180 / Math::PI)
 
-    [a, b, c, alpha, beta, gamma]
+    { a: a, b: b, c: c, alpha: alpha, beta: beta, gamma: gamma }
   end
 end
-
-# cell_parameters = {
-#   a: 3.83958982,
-#   b: 3.83958982,
-#   c: 3.83958982,
-#   alpha: 60,
-#   beta: 60,
-#   gamma: 60
-# }
-# 
-# lv = Cell.lattice_vectors(cell_parameters)
-# puts lv.inspect
-# a, b, c, alpha, beta, gamma = Cell.parameters(lv)
-# 
-# puts "a: #{a}"
-# puts "b: #{b}"
-# puts "c: #{c}"
-# puts "alpha: #{alpha}"
-# puts "beta: #{beta}"
-# puts "gamma: #{gamma}"

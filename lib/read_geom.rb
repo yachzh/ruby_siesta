@@ -8,6 +8,7 @@ class ReadGeom
   attr_reader :lattice_vectors, :coordinates, :cell_parameters
 
   def initialize(file_name)
+    @coordinates = []
     fn_dc = file_name.downcase
     if fn_dc.end_with?('.struct_out')
       read_siesta_struct_out(file_name)
@@ -16,12 +17,12 @@ class ReadGeom
     else
       puts 'Only implemented for struct_out (siesta) and poscar (vasp)'
     end
+    lattice_to_cell
   end
 
   def cryst
-    # Create the crystal structure hash
     {
-      cell_parameters: Cell.parameters(@lattice_vectors),
+      cell_parameters: @cell_parameters,
       lattice_vectors: @lattice_vectors,
       coordinates: @coordinates
     }
@@ -30,16 +31,11 @@ class ReadGeom
   def read_siesta_struct_out(file_name)
     File.open(file_name, 'r') do |file|
       lines = file.readlines
-
-      # The first three lines: a1,a2,a3
       @lattice_vectors = lines[0..2].map { |line| line.split.map(&:to_f) }
       latt_mat = Matrix.rows(@lattice_vectors)
 
-      # line 4: number_of_atoms
       number_of_atoms = lines[3].to_i
 
-      # line 5 to (5+number_of_atoms): i_species, atomic_number, x,y,z (frac coord)
-      @coordinates = []
       lines[4..(4 + number_of_atoms)].each do |line|
         _, atomic_number, x, y, z = line.split
         fractional_coord = Matrix.row_vector([x.to_f, y.to_f, z.to_f])
@@ -52,10 +48,36 @@ class ReadGeom
       end
     end
   end
-  # TODO: other types of struct files from vasp & wien2k
+  # TODO: other types of files including xyz and struct
 
-  def read_vasp_poscar(_file_name)
-    raise 'To be implemented...'
+  def read_vasp_poscar(file_name)
+    File.open(file_name, 'r') do |file|
+      lines = []
+      icar = []
+      chem = [] # chemical symbols
+      file.each_with_index do |line, index|
+        lines << line
+        icar << index if line.start_with?('Cartesian')
+      end
+      elements = lines[0].split.map(&:to_s)
+      j = icar[0]
+      n_elements = lines[j - 1].split.map(&:to_i)
+      number_of_atoms = n_elements.sum
+      n_elements.each_with_index do |n, i|
+        n.times { chem << elements[i] }
+      end
+      @lattice_vectors = lines[2..4].map { |line| line.split.map(&:to_f) }
+      atomic_positions = lines[(j + 1)..(j + number_of_atoms + 1)].map \
+      { |line| line.split.map(&:to_f) }
+      chem.each_with_index do |element, i|
+        position = atomic_positions[i]
+        @coordinates << { atom: element, x: position[0], y: position[1], z: position[2] }
+      end
+    end
+  end
+
+  def lattice_to_cell
+    @cell_parameters = Cell.parameters(@lattice_vectors)
   end
 
   def self.chemical_symbol(atomic_number)

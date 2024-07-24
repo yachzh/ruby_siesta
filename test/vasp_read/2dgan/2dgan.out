@@ -9,7 +9,7 @@ NetCDF support
 NetCDF-4 support
 
 * Running on 4 nodes in parallel
->> Start of run:  23-JUL-2024  17:24:21
+>> Start of run:  24-JUL-2024  21:14:18
 
                            ***********************       
                            *  WELCOME TO SIESTA  *       
@@ -565,7 +565,7 @@ siesta: FreeEng =      -325.546041
 
         iscf     Eharris(eV)        E_KS(eV)     FreeEng(eV)     dDmax    Ef(eV) dHmax(eV)
    scf:    1     -315.763502     -325.546041     -325.546041  1.787073 -7.167175 13.443076
-timer: Routine,Calls,Time,% = IterSCF        1       1.466  51.40
+timer: Routine,Calls,Time,% = IterSCF        1       1.527  52.53
    scf:    2     -325.994415     -325.771398     -325.771398  0.007134 -7.077743 13.051277
    scf:    3     -329.619734     -329.324367     -329.324367  0.221252 -4.140979  1.388664
    scf:    4     -329.092698     -329.311546     -329.311546  0.044992 -4.804099  2.223476
@@ -682,5 +682,5 @@ cite: which are encouraged to be cited in a published work.
         Primary SIESTA paper
           DOI: www.doi.org/10.1088/0953-8984/14/11/302
 
->> End of run:  23-JUL-2024  17:24:36
+>> End of run:  24-JUL-2024  21:14:33
 Job completed

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-$LOAD_PATH << '../../lib'
+$LOAD_PATH << '../../../lib'
 require 'siesta'
 
-siesta = Siesta.import_from_file('slab.STRUCT_OUT')
+siesta = Siesta.import_from_file('slab.vasp')
 siesta.label('2dgan')
 siesta.xc('PBE')
 siesta.spin(pol: false)
