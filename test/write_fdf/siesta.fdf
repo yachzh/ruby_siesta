@@ -1,0 +1,112 @@
+SystemLabel   siesta
+NumberOfAtoms   47
+NumberOfSpecies   5
+LatticeConstant   1.0 Ang
+%block LatticeVectors
+    19.10400000      0.00000000      0.00000000
+    -9.55200000     16.54454931      0.00000000
+     0.00000000     -0.00000000     43.12700000
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat   Ang
+%block ChemicalSpeciesLabel
+  1   26   Fe
+  2    7   N
+  3    6   C
+  4   16   S
+  5    1   H
+%endblock ChemicalSpeciesLabel
+
+%block AtomicCoordinatesAndAtomicSpecies
+     4.98222993      8.64781041     22.24620040   1
+     5.97278150      8.06729865     20.40640646   2
+     3.85863052      6.91851246     21.43295289   2
+     6.22878684      7.18346113     23.36477870   2
+     3.74889494      5.28849402     19.62094940   2
+     4.30666456      6.34604640     20.26399828   3
+     5.70389359      6.28754447     24.24109780   3
+     5.49977146      6.99385689     19.68579572   3
+     2.09854819      5.27474446     21.40495684   3
+     6.02979482      6.50990015     18.53880734   2
+     7.10992514      7.15272515     18.06356496   3
+     7.06725517      8.69715871     19.89263607   3
+     2.65907810      4.76310408     20.20758629   3
+     2.74766306      6.36714020     21.98909804   3
+     8.44077111      6.34595619     23.91669954   3
+     7.88599789      5.40615631     24.80544707   3
+     6.48974525      5.38414358     24.97466600   3
+     7.57954347      7.20565501     23.22014552   3
+     7.68121469      8.27533539     18.71160464   3
+     8.04404913     12.15704613     23.39483642   4
+     6.38453983     10.04254967     22.50004089   2
+     7.08944294     10.95426981     22.89595413   3
+     1.19888332      4.82784838     21.86504438   5
+     7.54513507      6.75436670     17.12346792   5
+     7.43204180      9.56208696     20.48461102   5
+     6.00644165      4.68446092     25.68246367   5
+     2.20269897      3.89160730     19.69349465   5
+     2.40321910      6.85135976     22.92671959   5
+     9.53336473      6.42297251     23.76993998   5
+     8.53686303      4.71401972     25.37128188   5
+     7.97024924      7.97865796     22.53026889   5
+     8.57075021      8.79485593     18.30947510   5
+     4.60515914      6.33851901     24.37043399   5
+     2.16819761      9.32274764     26.06009851   4
+     3.68698883      8.74812230     23.74065595   2
+     3.03487173      9.00654373     24.73673595   3
+     3.69817497     10.03729013     21.04988427   2
+     2.34211800      9.97603449     21.10632568   3
+     3.48575382     11.88528279     19.48466238   3
+     2.08165540     11.80098266     19.53643297   3
+     1.50147588     10.82634211     20.37035641   3
+     4.24854660     10.99323931     20.25501435   3
+     0.40367875     10.73268810     20.46935602   5
+     3.99243460     12.64442122     18.85951705   5
+     1.44728482     12.48757857     18.94315183   5
+     5.35519550     11.03866016     20.26862105   5
+     1.92904346      9.21585539     21.79736644   5
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+PAO.BasisSize   DZP
+PAO.EnergyShift   50 meV
+Mesh.Cutoff   200 Ry
+WriteMullikenPop   1
+MullikenInSCF   false
+WriteCoorXmol   true
+SCF.Mixer.Weight   0.01
+SCF.Mixer.History   5
+SCF.Mixer.Kick   0
+SCF.DM.Tolerance   0.0001
+SCF.H.Converge   true
+SCF.H.Tolerance   1.0 meV
+MaxSCFIterations   2000
+DM.UseSaveDM   true
+OccupationFunction   MP
+OccupationMPOrder   4
+ElectronicTemperature   1000 K
+NetCharge   0
+Slab.DipoleCorrection   false
+XC.Functional   GGA
+XC.Authors   PBE
+
+MM.UnitsDistance Ang  # what this program prints out DO NOT CHANGE
+MM.UnitsEnergy    eV  # what this program prints out DO NOT CHANGE
+MM.Grimme.S6     0.75 # Grimme-paper for PBE (correct for your functional)
+MM.Grimme.D     20.   # Grimme-paper (correct for your functional)
+%block MM.Potentials
+  1   1 Grimme    111.94      3.124 # Fe, 10.1002/jcc.20495
+  1   2 Grimme     37.78      2.959 # Fe / N
+  1   3 Grimme     45.06      3.014 # Fe / C
+  1   4 Grimme     80.39      3.245 # Fe / S
+  1   5 Grimme     12.74      2.563 # Fe / H
+  2   2 Grimme     12.75      2.794 # N, 10.1002/jcc.20495
+  2   3 Grimme     15.21      2.849 # N / C
+  2   4 Grimme     27.13      3.080 # N / S
+  2   5 Grimme      4.30      2.398 # N / H
+  3   3 Grimme     18.14      2.904 # C, 10.1002/jcc.20495
+  3   4 Grimme     32.36      3.135 # C / S
+  3   5 Grimme      5.13      2.453 # C / H
+  4   4 Grimme     57.73      3.366 # S, 10.1002/jcc.20495
+  4   5 Grimme      9.15      2.684 # S / H
+  5   5 Grimme      1.45      2.002 # H, 10.1002/jcc.20495
+%endblock MM.Potentials

@@ -22,20 +22,25 @@ class Siesta
                          end
     @parah = { 'PAO.BasisSize' => 'DZP',
                'PAO.EnergyShift' => '50 meV',
+               'Mesh.Cutoff' => '200 Ry',
                'WriteMullikenPop' => 1,
+               'MullikenInSCF' => false,
                'WriteCoorXmol' => true,
-               'DM.MixingWeight' => 0.01,
-               'DM.NumberPulay' => 5,
-               'DM.UseSaveDM' => true,
-               'DM.Tolerance' => 0.0001,
-               'MaxSCFIterations' => 2000,
+               'SCF.Mixer.Weight' => 0.01,
+               'SCF.Mixer.History' => 5,
+               'SCF.Mixer.Kick' => 0,
+               'SCF.DM.Tolerance' => 1e-4,
                'SCF.H.Converge' => true,
                'SCF.H.Tolerance' => '1.0 meV',
+               'MaxSCFIterations' => 2000,
+               'DM.UseSaveDM' => true,
                'OccupationFunction' => 'MP',
-               'OccupationMPOrder' => 4 }
+               'OccupationMPOrder' => 4,
+               'ElectronicTemperature' => '1000 K',
+               'NetCharge' => 0,
+               'Slab.DipoleCorrection' => false }
     xc('PZ')
-    electronic_temperature_in_K(1000)
-    meshcutoff_in_Ry(200)
+    @vdW_correction = false
     @blocks = []
     update_file
   end
@@ -49,6 +54,10 @@ class Siesta
     new(ReadGeom.new(str_file).cryst)
   end
 
+  def plus_d2
+    @vdW_correction = true
+  end
+
   def xc(inp_xc)
     allowed_xc = {
       'LDA' => %w[PZ CA PW92],
@@ -60,9 +69,11 @@ class Siesta
 
     inp_xc = 'PZ' if inp_xc == 'LDA'
     allowed_xc.each do |key, value|
-      if value.include?(inp_xc)
-        @parah['XC.functional'] = key
-        @parah['XC.authors'] = inp_xc
+      value.each do |aux|
+        next unless aux.downcase == inp_xc.downcase
+
+        @parah['XC.Functional'] = key
+        @parah['XC.Authors'] = aux
       end
     end
   end
@@ -81,9 +92,13 @@ class Siesta
   end
 
   # TODO: set initial spin
+  # ExternalElectricField
+  # format kmesh block
+  # dispersion correction, call fdf2grimme
   # todo set Hubbard U
   # todo write pdos denchar
   # todo geometry optimization
+  # aimd setup
 
   def kpoint(kmesh: [1, 1, 1], dk: 0.0)
     k1 = [kmesh[0], 0, 0]
@@ -99,16 +114,8 @@ class Siesta
     BLOCK
     @blocks << kgrid
   end
-  
-  def electronic_temperature_in_K(temp)
-    @parah['ElectronicTemperature']="#{temp} K"
-  end
 
-  def meshcutoff_in_Ry(meshcutoff)
-    @parah['Mesh.Cutoff']="#{meshcutoff} Ry"
-  end
-
-  def generate_fdf_file(vector: true)
+  def write_fdf(vector: true)
     File.open(@fdf_file, 'w') do |file|
       file.puts "SystemLabel   #{@syslabel}"
       file.puts "NumberOfAtoms   #{@coordinates.size}"
@@ -130,6 +137,9 @@ class Siesta
     end
     write_parah
     write_blocks
+    return unless @vdW_correction
+
+    system("fdf2grimme #{@fdf_file} >> #{@fdf_file}")
   end
 
   def energy
@@ -152,7 +162,7 @@ class Siesta
   end
 
   def run
-    generate_fdf_file
+    write_fdf
     user_command = ENV['RUBY_SIESTA_COMMAND']
     command = if user_command.nil?
                 "siesta #{@fdf_file} > #{@ofile}"
@@ -184,7 +194,7 @@ class Siesta
     dir_path = File.dirname(File.expand_path($PROGRAM_NAME))
     file_path = File.join(dir_path, "#{atom}.psf")
     File.unlink(file_path) if File.symlink?(file_path) || File.exist?(file_path)
-    xc = @parah['XC.functional'].downcase
+    xc = @parah['XC.Functional'].downcase
     src_psf = File.join(ENV['SIESTA_PP_PATH'], "#{atom}.#{xc}.psf")
     unless File.exist?(src_psf)
       puts "#{src_psf} does not exist"
@@ -218,5 +228,4 @@ class Siesta
               " #{format('%7.2f', @cell[:gamma])}"
     file.puts '%endblock LatticeParameters', ''
   end
-
 end
