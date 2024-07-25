@@ -19,7 +19,7 @@ Here's an example of how to use the project:
 ```ruby
 require 'siesta'
 
-siesta = Siesta.import_from_file('input.STRUCT_OUT')
+siesta = Siesta.import_from_file('input.STRUCT_OUT') # *.vasp (*poscar*), *.xyz
 siesta.label('silicon')
 siesta.xc('PBE')
 siesta.spin(pol: false)

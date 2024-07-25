@@ -3,19 +3,23 @@
 require 'cell'
 require 'matrix'
 
-# read crystal structure from struct files produced by siesta, vasp
+# read atomic structures from str files produced by
+# siesta, vasp, and ase (xyz)
 class ReadGeom
-  attr_reader :lattice_vectors, :coordinates, :cell_parameters
+  attr_reader :lattice_vectors, :coordinates, :cell_parameters, :number_of_atoms
 
   def initialize(file_name)
+    @inf = file_name
     @coordinates = []
-    fn_dc = file_name.downcase
-    if fn_dc.end_with?('.struct_out')
-      read_siesta_struct_out(file_name)
-    elsif fn_dc.end_with?('.vasp') || fn_dc.include?('poscar')
-      read_vasp_poscar(file_name)
+    fn = @inf.downcase
+    if fn.end_with?('.struct_out')
+      read_siesta_struct_out
+    elsif fn.end_with?('.vasp') || fn.include?('poscar')
+      read_vasp_poscar
+    elsif fn.end_with?('.xyz')
+      read_xyz
     else
-      puts 'Only implemented for struct_out (siesta) and poscar (vasp)'
+      puts 'Only implemented for struct_out, poscar, and xyz'
     end
     lattice_to_cell
   end
@@ -26,58 +30,6 @@ class ReadGeom
       lattice_vectors: @lattice_vectors,
       coordinates: @coordinates
     }
-  end
-
-  def read_siesta_struct_out(file_name)
-    File.open(file_name, 'r') do |file|
-      lines = file.readlines
-      @lattice_vectors = lines[0..2].map { |line| line.split.map(&:to_f) }
-      latt_mat = Matrix.rows(@lattice_vectors)
-
-      number_of_atoms = lines[3].to_i
-
-      lines[4..(4 + number_of_atoms)].each do |line|
-        _, atomic_number, x, y, z = line.split
-        fractional_coord = Matrix.row_vector([x.to_f, y.to_f, z.to_f])
-        cartesian_coord = (fractional_coord * latt_mat).to_a[0]
-
-        @coordinates << { atom: self.class.chemical_symbol(atomic_number.to_i),
-                          x: cartesian_coord[0],
-                          y: cartesian_coord[1],
-                          z: cartesian_coord[2] }
-      end
-    end
-  end
-  # TODO: other types of files including xyz and struct
-
-  def read_vasp_poscar(file_name)
-    File.open(file_name, 'r') do |file|
-      lines = []
-      icar = []
-      chem = [] # chemical symbols
-      file.each_with_index do |line, index|
-        lines << line
-        icar << index if line.start_with?('Cartesian')
-      end
-      elements = lines[0].split.map(&:to_s)
-      j = icar[0]
-      n_elements = lines[j - 1].split.map(&:to_i)
-      number_of_atoms = n_elements.sum
-      n_elements.each_with_index do |n, i|
-        n.times { chem << elements[i] }
-      end
-      @lattice_vectors = lines[2..4].map { |line| line.split.map(&:to_f) }
-      atomic_positions = lines[(j + 1)..(j + number_of_atoms + 1)].map \
-      { |line| line.split.map(&:to_f) }
-      chem.each_with_index do |element, i|
-        position = atomic_positions[i]
-        @coordinates << { atom: element, x: position[0], y: position[1], z: position[2] }
-      end
-    end
-  end
-
-  def lattice_to_cell
-    @cell_parameters = Cell.parameters(@lattice_vectors)
   end
 
   def self.chemical_symbol(atomic_number)
@@ -106,5 +58,100 @@ class ReadGeom
       105 => 'Db', 106 => 'Sg', 107 => 'Bh', 108 => 'Hs', 109 => 'Mt', 110 => 'Ds', 111 => 'Rg', 112 => 'Cn',
       113 => 'Nh', 114 => 'Fl', 115 => 'Mc', 116 => 'Lv', 117 => 'Ts', 118 => 'Og'
     }
+  end
+
+  private
+
+  def read_siesta_struct_out
+    File.open(@inf, 'r') do |file|
+      lines = file.readlines
+      @lattice_vectors = lines[0..2].map { |line| line.split.map(&:to_f) }
+      latt_mat = Matrix.rows(@lattice_vectors)
+
+      @number_of_atoms = lines[3].to_i
+
+      lines[4..].each do |line|
+        _, atomic_number, x, y, z = line.split
+        fractional_coord = Matrix.row_vector([x.to_f, y.to_f, z.to_f])
+        cartesian_coord = (fractional_coord * latt_mat).to_a[0]
+
+        @coordinates << { atom: self.class.chemical_symbol(atomic_number.to_i),
+                          x: cartesian_coord[0],
+                          y: cartesian_coord[1],
+                          z: cartesian_coord[2] }
+      end
+    end
+  end
+
+  def read_vasp_poscar
+    File.open(@inf, 'r') do |file|
+      lines = []
+      icar = []
+      chem = [] # chemical symbols
+      file.each_with_index do |line, index|
+        lines << line
+        icar << index if line.start_with?('Cartesian')
+      end
+      elements = lines[0].split.map(&:to_s)
+      j = icar[0]
+      n_elements = lines[j - 1].split.map(&:to_i)
+      @number_of_atoms = n_elements.sum
+      n_elements.each_with_index do |n, i|
+        n.times { chem << elements[i] }
+      end
+      @lattice_vectors = lines[2..4].map { |line| line.split.map(&:to_f) }
+      atomic_positions = lines[(j + 1)..].map { |line| line.split.map(&:to_f) }
+      chem.each_with_index do |element, i|
+        position = atomic_positions[i]
+        @coordinates << { atom: element, x: position[0], y: position[1], z: position[2] }
+      end
+    end
+  end
+
+  def read_xyz
+    File.open(@inf, 'r') do |file|
+      lines = file.readlines
+      @number_of_atoms = lines[0].to_i
+      lines[2..].each do |line|
+        coord = line.split
+
+        @coordinates << { atom: coord[0].to_s,
+                          x: coord[1].to_f,
+                          y: coord[2].to_f,
+                          z: coord[3].to_f }
+      end
+      @lattice_vectors = extract_lattice_vector(lines)
+    end
+  end
+
+  def extract_lattice_vector(lines)
+    match = lines[1].match(/Lattice="(.*)"/)
+    if match
+      match[1].split.each_slice(3).map { |slice| slice.map(&:to_f) }.take(3)
+    else
+      generate_lattice_vector(lines)
+    end
+  end
+
+  def generate_lattice_vector(lines)
+    # create a cubic unit cell with a lattice constant that is twice the minimum
+    # necessary to fit the molecule
+    coords = lines[2..].map { |line| line.split[1..3].map(&:to_f) }
+    x, y, z = coords.transpose
+    center = [(x.min + x.max) / 2.0, (y.min + y.max) / 2.0, (z.min + z.max) / 2.0]
+    a = [x, y, z].map { |coord| coord.max - coord.min }.max * 2.0
+
+    # move the molecule to the center of the cell
+    @coordinates.each do |atom|
+      atom[:x] = (atom[:x] - center[0]) + a / 2.0
+      atom[:y] = (atom[:y] - center[1]) + a / 2.0
+      atom[:z] = (atom[:z] - center[2]) + a / 2.0
+    end
+
+    [[a, 0.0, 0.0], [0.0, a, 0.0], [0.0, 0.0, a]]
+  end
+
+  def lattice_to_cell
+    @cell_parameters = Cell.parameters(@lattice_vectors)
   end
 end

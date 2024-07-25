@@ -9,7 +9,7 @@ require 'pycall'
 
 class HashEqualityTest < Minitest::Test
   def test_hashes_are_equal
-    fn = 'molhsN2Site.vasp'
+    fn = 'slab.STRUCT_OUT'
     solid = ReadGeom.new(fn)
     hash1 = solid.cryst
     puts hash1.inspect
