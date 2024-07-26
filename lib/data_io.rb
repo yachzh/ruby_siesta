@@ -35,8 +35,8 @@ class DataIO
     ruby_array
   end
 
-  def self.atoms2cryst(atoms)
-    # Extract cell parameters from ASE object
+  def self.atoms2struct(atoms)
+    # Extract structural parameters from ASE object
     cellpar = to_a(atoms.cell.cellpar).map(&:to_f)
 
     cell_parameters = {
@@ -48,12 +48,10 @@ class DataIO
       gamma: cellpar[5]
     }
 
-    # Extract lattice vectors from ASE object
     latt = []
     3.times { |i| latt << to_a(atoms.cell[i]) }
     lattice_vectors = latt.map { |a| a.map(&:to_f) }
 
-    # Extract atom coordinates from ASE object
     chem = atoms.get_chemical_symbols.to_a
     coordinates = []
 

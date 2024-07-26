@@ -3,20 +3,17 @@
 $LOAD_PATH << '../../lib'
 
 require 'minitest/autorun'
-require 'read_geom'
+require 'struct_reader'
 require 'data_io'
 require 'pycall'
 
 class HashEqualityTest < Minitest::Test
   def test_hashes_are_equal
     fn = 'freemol-FeP-is-opt.xyz'
-    solid = ReadGeom.new(fn)
-    hash1 = solid.cryst
-    puts hash1.inspect
-    puts '*' * 50
+    solid = StructReader.new(fn)
+    hash1 = solid.struct
     atoms = PyCall.import_module('ase.io').read(fn)
-    hash2 = DataIO.atoms2cryst(atoms)
-    puts hash2.inspect
+    hash2 = DataIO.atoms2struct(atoms)
     assert array_equality(solid.lattice_vectors, hash2[:lattice_vectors], 1e-6)
     assert hash_equality(solid.cell_parameters, hash2[:cell_parameters], 1e-6)
     assert array_equality(solid.coordinates, hash2[:coordinates], 1e-6)

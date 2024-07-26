@@ -5,7 +5,7 @@ require 'matrix'
 
 # read atomic structures from str files produced by
 # siesta, vasp, and ase (xyz)
-class ReadGeom
+class StructReader
   attr_reader :lattice_vectors, :coordinates, :cell_parameters, :number_of_atoms
 
   def initialize(file_name)
@@ -24,7 +24,7 @@ class ReadGeom
     lattice_to_cell
   end
 
-  def cryst
+  def struct
     {
       cell_parameters: @cell_parameters,
       lattice_vectors: @lattice_vectors,

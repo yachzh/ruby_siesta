@@ -3,7 +3,8 @@
 $LOAD_PATH << '../../lib'
 require 'siesta'
 
-siesta=Siesta.import_from_file('mol-opt.xyz')
-siesta.xc('pbe')
-siesta.plus_d2
-siesta.write_fdf
+dft = Siesta.import_from_file('slab.vasp')
+dft.xc('pw91')
+dft.kpoint(kmesh: [30, 30, 30])
+# dft.plus_d2
+dft.write_fdf

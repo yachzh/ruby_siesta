@@ -1,47 +1,30 @@
 # frozen_string_literal: true
 
 require 'cell'
-require 'read_geom'
-require 'data_io'
+require 'struct_reader'
+require 'fdf'
 
 # call siesta from Ruby
 class Siesta
-  def initialize(crystal_structure)
+  def initialize(struct)
     @syslabel = 'siesta'
-    @cryst = crystal_structure
-    @cell = @cryst[:cell_parameters]
-    @coordinates = @cryst[:coordinates]
+    @struct = struct
+    @cell = @struct[:cell_parameters]
+    @coordinates = @struct[:coordinates]
     @species_labels = []
     @coordinates.each do |coord|
       @species_labels << coord[:atom] unless @species_labels.include?(coord[:atom])
     end
-    @lattice_vectors ||= if @cryst[:lattice_vectors].nil?
+    @lattice_vectors ||= if @struct[:lattice_vectors].nil?
                            Cell.lattice_vectors(@cell)
                          else
-                           @cryst[:lattice_vectors]
+                           @struct[:lattice_vectors]
                          end
-    @parah = { 'PAO.BasisSize' => 'DZP',
-               'PAO.EnergyShift' => '50 meV',
-               'Mesh.Cutoff' => '200 Ry',
-               'WriteMullikenPop' => 1,
-               'MullikenInSCF' => false,
-               'WriteCoorXmol' => true,
-               'SCF.Mixer.Weight' => 0.01,
-               'SCF.Mixer.History' => 5,
-               'SCF.Mixer.Kick' => 0,
-               'SCF.DM.Tolerance' => 1e-4,
-               'SCF.H.Converge' => true,
-               'SCF.H.Tolerance' => '1.0 meV',
-               'MaxSCFIterations' => 2000,
-               'DM.UseSaveDM' => true,
-               'OccupationFunction' => 'MP',
-               'OccupationMPOrder' => 4,
-               'ElectronicTemperature' => '1000 K',
-               'NetCharge' => 0,
-               'Slab.DipoleCorrection' => false }
-    xc('PZ')
-    @vdW_correction = false
+    @parah = {}
     @blocks = []
+    xc('pz')
+    fdf_input(nil)
+    @vdW_correction = false
     update_file
   end
 
@@ -51,7 +34,7 @@ class Siesta
   end
 
   def self.import_from_file(str_file)
-    new(ReadGeom.new(str_file).cryst)
+    new(StructReader.new(str_file).struct)
   end
 
   def plus_d2
@@ -67,7 +50,7 @@ class Siesta
       'VDW' => %w[DRSLL LMKLL KBM C09 BH VV]
     }
 
-    inp_xc = 'PZ' if inp_xc == 'LDA'
+    inp_xc = 'pz' if inp_xc.downcase == 'lda'
     allowed_xc.each do |key, value|
       value.each do |aux|
         next unless aux.downcase == inp_xc.downcase
@@ -93,8 +76,6 @@ class Siesta
 
   # TODO: set initial spin
   # ExternalElectricField
-  # format kmesh block
-  # dispersion correction, call fdf2grimme
   # todo set Hubbard U
   # todo write pdos denchar
   # todo geometry optimization
@@ -107,12 +88,20 @@ class Siesta
 
     kgrid = <<~BLOCK
       %block kgrid_Monkhorst_Pack
-        #{k1.join('   ')}   #{dk}
-        #{k2.join('   ')}   #{dk}
-        #{k3.join('   ')}   #{dk}
+        #{k1.map { |x| x.to_s.rjust(4) }.join(' ')}   #{dk}
+        #{k2.map { |x| x.to_s.rjust(4) }.join(' ')}   #{dk}
+        #{k3.map { |x| x.to_s.rjust(4) }.join(' ')}   #{dk}
       %endblock kgrid_Monkhorst_Pack
     BLOCK
     @blocks << kgrid
+  end
+
+  def fdf_input(args)
+    # the args looks like {'PAO.BasisSize' => 'DZP', 'Mesh.Cutoff' => '200 Ry',...}
+    return unless args.nil?
+
+    fdf_par = Fdf.new.allowed_parameters
+    @parah.merge!(fdf_par)
   end
 
   def write_fdf(vector: true)
@@ -125,7 +114,7 @@ class Siesta
       file.puts 'AtomicCoordinatesFormat   Ang'
       file.puts '%block ChemicalSpeciesLabel'
       @species_labels.each_with_index do |label, index|
-        atomic_number = ReadGeom.atomic_number(label)
+        atomic_number = StructReader.atomic_number(label)
         file.puts "#{format('%3d', (index + 1))} #{format('%4d', atomic_number)}   #{label}"
         link_psf(label)
       end
@@ -144,7 +133,7 @@ class Siesta
 
   def energy
     # run unless File.exist?(@ofile)
-    run
+    run_siesta
     last_line = nil
     File.foreach(@ofile) do |line|
       last_line = line if line.include?('Total =')
@@ -161,7 +150,7 @@ class Siesta
     @ofile = "#{@syslabel}.out"
   end
 
-  def run
+  def run_siesta
     write_fdf
     user_command = ENV['RUBY_SIESTA_COMMAND']
     command = if user_command.nil?
@@ -196,10 +185,8 @@ class Siesta
     File.unlink(file_path) if File.symlink?(file_path) || File.exist?(file_path)
     xc = @parah['XC.Functional'].downcase
     src_psf = File.join(ENV['SIESTA_PP_PATH'], "#{atom}.#{xc}.psf")
-    unless File.exist?(src_psf)
-      puts "#{src_psf} does not exist"
-      exit
-    end
+    raise "#{src_psf} does not exist" unless File.exist?(src_psf)
+
     File.symlink(src_psf, file_path)
   end
 

@@ -19,8 +19,6 @@ AtomicCoordinatesFormat   Ang
      0.00000000      1.85791317     20.00000000   2
 %endblock AtomicCoordinatesAndAtomicSpecies
 
-XC.Functional   GGA
-XC.Authors   PW91
 PAO.BasisSize   DZP
 PAO.EnergyShift   50 meV
 Mesh.Cutoff   200 Ry
@@ -40,6 +38,8 @@ OccupationMPOrder   4
 ElectronicTemperature   1000 K
 NetCharge   0
 Slab.DipoleCorrection   false
+XC.Functional   GGA
+XC.Authors   PW91
 
 %block kgrid_Monkhorst_Pack
     30    0    0   0.0
