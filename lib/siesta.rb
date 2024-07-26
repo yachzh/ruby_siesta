@@ -20,12 +20,7 @@ class Siesta
                          else
                            @struct[:lattice_vectors]
                          end
-    @parah = {}
-    @blocks = []
-    xc('pz')
-    fdf_input(nil)
-    @vdW_correction = false
-    update_file
+    default_option
   end
 
   def label(sys_label)
@@ -98,10 +93,9 @@ class Siesta
 
   def fdf_input(args)
     # the args looks like {'PAO.BasisSize' => 'DZP', 'Mesh.Cutoff' => '200 Ry',...}
-    return unless args.nil?
-
-    fdf_par = Fdf.new.allowed_parameters
-    @parah.merge!(fdf_par)
+    fdf_ctrl = Fdf.new(@parah)
+    fdf_ctrl.update_parameters(args)
+    @parah = fdf_ctrl.fdf_parameters
   end
 
   def write_fdf(vector: true)
@@ -144,6 +138,14 @@ class Siesta
   end
 
   private
+
+  def default_option
+    @blocks = []
+    @parah = Fdf.default_parameters
+    @vdW_correction = false
+    xc('pz')
+    update_file
+  end
 
   def update_file
     @fdf_file = "#{@syslabel}.fdf"
