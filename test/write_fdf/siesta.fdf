@@ -19,29 +19,31 @@ AtomicCoordinatesFormat   Ang
      0.00000000      1.85791317     20.00000000   2
 %endblock AtomicCoordinatesAndAtomicSpecies
 
-PAO.BasisSize   DZP
-PAO.EnergyShift   0.02 Ry
-Mesh.Cutoff   500 Ry
-WriteMullikenPop   0
+PAO.BasisSize   TZP
+PAO.EnergyShift   50 meV
+Mesh.Cutoff   200 Ry
+SaveElectrostaticPotential   false
+WriteMullikenPop   1
 MullikenInSCF   false
-WriteCoorXmol   false
-SCF.Mixer.Weight   0.25
-SCF.Mixer.History   2
-SCF.Mixer.Kick   0
+WriteCoorXmol   true
+Write.Denchar   false
+SaveBaderCharge   false
+SCF.Mixer.Weight   0.07
+SCF.Mixer.History   5
 SCF.DM.Tolerance   0.0001
 SCF.H.Converge   true
 SCF.H.Tolerance   1.0 meV
-MaxSCFIterations   1000
-DM.UseSaveDM   false
-OccupationFunction   FD
-OccupationMPOrder   1
-ElectronicTemperature   300 K
-NetCharge   0
+MaxSCFIterations   2000
+DM.UseSaveDM   true
+OccupationFunction   MP
+OccupationMPOrder   4
+ElectronicTemperature   1000 K
 Slab.DipoleCorrection   false
 XC.Functional   GGA
 XC.Authors   PW91
-Write.Denchar   true
-SaveBaderCharge   true
+Spin   non-polarized
+Spin.Fix   false
+Spin.Total   0
 
 %block kgrid_Monkhorst_Pack
     30    0    0   0.0

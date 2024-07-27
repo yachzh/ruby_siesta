@@ -50,8 +50,7 @@ class Siesta
       value.each do |aux|
         next unless aux.downcase == inp_xc.downcase
 
-        @parah['XC.Functional'] = key
-        @parah['XC.Authors'] = aux
+        fdf_input({ 'XC.Functional' => key, 'XC.Authors' => aux })
       end
     end
   end
@@ -64,15 +63,28 @@ class Siesta
          end
     ss = 'non-colinear' if noncol
     ss = 'spin-orbit' if soc
-    @parah['Spin'] = ss
-    @parah['Spin.Fix'] = fixspin
-    @parah['Spin.Total'] = totspin
+    fdf_input({ 'Spin' => ss, 'Spin.Fix' => fixspin, 'Spin.Total' => totspin })
+  end
+
+  def parameters(**kwargs)
+    fdfpar = {}
+    kwargs.each_key do |ik|
+      raise "#{ik} not recognized!" unless Fdf.custom.key?(ik)
+    end
+    Fdf.custom.each do |ck, cv|
+      if kwargs.key?(ck)
+        fdfpar.store(cv[0], kwargs[ck])
+      else
+        fdfpar.store(cv[0], cv[1])
+      end
+    end
+    fdf_input(fdfpar)
   end
 
   # TODO: set initial spin
   # ExternalElectricField
   # todo set Hubbard U
-  # todo write pdos denchar
+  # todo write pdos
   # todo geometry optimization
   # aimd setup
 
@@ -144,6 +156,7 @@ class Siesta
     @parah = Fdf.default_parameters
     @vdW_correction = false
     xc('pz')
+    spin
     update_file
   end
 
@@ -172,8 +185,9 @@ class Siesta
   end
 
   def write_parah
-    file_path = @fdf_file
-    File.open(file_path, 'a') do |file|
+    @parah.delete('NetCharge') if @parah['NetCharge'].abs < 1e-6
+    @parah.delete('SCF.Mixer.Kick') if @parah['SCF.Mixer.Kick'].zero?
+    File.open(@fdf_file, 'a') do |file|
       @parah.each do |key, value|
         file.puts "#{key}   #{value}"
       end
