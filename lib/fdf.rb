@@ -9,7 +9,6 @@ class Fdf
   end
 
   def update_parameters(input_hash)
-    # TODO: check the validity of input keys
     @fdf_parameters.merge!(input_hash)
   end
 

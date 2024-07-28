@@ -41,9 +41,6 @@ ElectronicTemperature   1000 K
 Slab.DipoleCorrection   false
 XC.Functional   GGA
 XC.Authors   PW91
-Spin   non-polarized
-Spin.Fix   false
-Spin.Total   0
 
 %block kgrid_Monkhorst_Pack
     30    0    0   0.0

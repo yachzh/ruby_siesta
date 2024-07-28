@@ -56,6 +56,7 @@ class Siesta
   end
 
   def spin(pol: false, noncol: false, soc: false, fixspin: false, totspin: 0)
+    spinpar = {}
     ss = if pol
            'polarized'
          else
@@ -63,7 +64,14 @@ class Siesta
          end
     ss = 'non-colinear' if noncol
     ss = 'spin-orbit' if soc
-    fdf_input({ 'Spin' => ss, 'Spin.Fix' => fixspin, 'Spin.Total' => totspin })
+    spinpar.store('Spin', ss) if ss != 'non-polarized'
+    if fixspin
+      spinpar.store('Spin.Fix', true)
+      spinpar.store('Spin.Total', totspin)
+    end
+    return if spinpar.nil?
+
+    fdf_input(spinpar)
   end
 
   def parameters(**kwargs)
@@ -103,13 +111,6 @@ class Siesta
     @blocks << kgrid
   end
 
-  def fdf_input(args)
-    # the args looks like {'PAO.BasisSize' => 'DZP', 'Mesh.Cutoff' => '200 Ry',...}
-    fdf_ctrl = Fdf.new(@parah)
-    fdf_ctrl.update_parameters(args)
-    @parah = fdf_ctrl.fdf_parameters
-  end
-
   def write_fdf(vector: true)
     File.open(@fdf_file, 'w') do |file|
       file.puts "SystemLabel   #{@syslabel}"
@@ -138,7 +139,6 @@ class Siesta
   end
 
   def energy
-    # run unless File.exist?(@ofile)
     run_siesta
     last_line = nil
     File.foreach(@ofile) do |line|
@@ -151,12 +151,18 @@ class Siesta
 
   private
 
+  def fdf_input(args)
+    # the args looks like {'PAO.BasisSize' => 'DZP', 'Mesh.Cutoff' => '200 Ry',...}
+    fdf_ctrl = Fdf.new(@parah)
+    fdf_ctrl.update_parameters(args)
+    @parah = fdf_ctrl.fdf_parameters
+  end
+
   def default_option
     @blocks = []
     @parah = Fdf.default_parameters
     @vdW_correction = false
     xc('pz')
-    spin
     update_file
   end
 

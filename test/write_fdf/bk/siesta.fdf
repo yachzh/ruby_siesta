@@ -30,10 +30,9 @@ Write.Denchar   false
 SaveBaderCharge   false
 SCF.Mixer.Weight   0.07
 SCF.Mixer.History   5
-SCF.Mixer.Kick   0
 SCF.DM.Tolerance   0.0001
 SCF.H.Converge   true
-SCF.H.Tolerance   1 meV
+SCF.H.Tolerance   1.0 meV
 MaxSCFIterations   2000
 DM.UseSaveDM   true
 OccupationFunction   MP
@@ -42,9 +41,6 @@ ElectronicTemperature   1000 K
 Slab.DipoleCorrection   false
 XC.Functional   GGA
 XC.Authors   PW91
-Spin   non-polarized
-Spin.Fix   false
-Spin.Total   0
 
 %block kgrid_Monkhorst_Pack
     30    0    0   0.0
