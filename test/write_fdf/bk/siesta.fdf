@@ -22,12 +22,8 @@ AtomicCoordinatesFormat   Ang
 PAO.BasisSize   TZP
 PAO.EnergyShift   50 meV
 Mesh.Cutoff   200 Ry
-SaveElectrostaticPotential   false
 WriteMullikenPop   1
-MullikenInSCF   false
 WriteCoorXmol   true
-Write.Denchar   false
-SaveBaderCharge   false
 SCF.Mixer.Weight   0.07
 SCF.Mixer.History   5
 SCF.DM.Tolerance   0.0001
@@ -38,7 +34,6 @@ DM.UseSaveDM   true
 OccupationFunction   MP
 OccupationMPOrder   4
 ElectronicTemperature   1000 K
-Slab.DipoleCorrection   false
 XC.Functional   GGA
 XC.Authors   PW91
 

@@ -74,6 +74,11 @@ class Siesta
     fdf_input(spinpar)
   end
 
+  def magnetic_center(metal: 'fe', spin_state: 'ls')
+    local_spin=generate_spin_moment
+    init_spin(local_spin)
+  end
+
   def parameters(**kwargs)
     fdfpar = {}
     kwargs.each_key do |ik|
@@ -89,7 +94,6 @@ class Siesta
     fdf_input(fdfpar)
   end
 
-  # TODO: set initial spin
   # ExternalElectricField
   # todo set Hubbard U
   # todo write pdos
@@ -158,6 +162,16 @@ class Siesta
     @parah = fdf_ctrl.fdf_parameters
   end
 
+def init_spin(moments)
+  # input: the array of local spin moment in Bohr magneton
+  non_zero_moments = moments.each_with_index.select { |moment, index| moment.abs > 1e-6 }
+  spinblock = <<~BLOCK
+    %block DM.InitSpin
+    #{non_zero_moments.map { |moment, index| "#{index + 1} #{moment}" }.join("\n")}
+    %endblock DM.InitSpin
+  BLOCK
+  @blocks << spinblock
+end
   def default_option
     @blocks = []
     @parah = Fdf.default_parameters
@@ -193,6 +207,10 @@ class Siesta
   def write_parah
     @parah.delete('NetCharge') if @parah['NetCharge'].abs < 1e-6
     @parah.delete('SCF.Mixer.Kick') if @parah['SCF.Mixer.Kick'].zero?
+    ['SaveElectrostaticPotential', 'MullikenInSCF', 'Write.Denchar',
+     'SaveBaderCharge', 'Slab.DipoleCorrection'].each do |key|
+      @parah.delete(key) unless @parah[key]
+    end
     File.open(@fdf_file, 'a') do |file|
       @parah.each do |key, value|
         file.puts "#{key}   #{value}"
