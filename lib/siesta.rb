@@ -11,9 +11,12 @@ class Siesta
     @struct = struct
     @cell = @struct[:cell_parameters]
     @coordinates = @struct[:coordinates]
+    @number_of_atoms = @coordinates.length
     @species_labels = []
+    @chem = []
     @coordinates.each do |coord|
       @species_labels << coord[:atom] unless @species_labels.include?(coord[:atom])
+      @chem << coord[:atom] # chemical elements
     end
     @lattice_vectors ||= if @struct[:lattice_vectors].nil?
                            Cell.lattice_vectors(@cell)
@@ -55,7 +58,7 @@ class Siesta
     end
   end
 
-  def spin(pol: false, noncol: false, soc: false, fixspin: false, totspin: 0)
+  def spin(pol: false, noncol: false, soc: false, fixspin: false)
     spinpar = {}
     ss = if pol
            'polarized'
@@ -65,18 +68,36 @@ class Siesta
     ss = 'non-colinear' if noncol
     ss = 'spin-orbit' if soc
     spinpar.store('Spin', ss) if ss != 'non-polarized'
-    if fixspin
-      spinpar.store('Spin.Fix', true)
-      spinpar.store('Spin.Total', totspin)
-    end
+    spinpar.store('Spin.Fix', true) if fixspin
     return if spinpar.nil?
 
     fdf_input(spinpar)
   end
 
-  def magnetic_center(metal: 'fe', spin_state: 'ls')
-    local_spin=generate_spin_moment
-    init_spin(local_spin)
+  def initial_spin(atom: nil, spin_moment: nil, spin_state: nil)
+    # atom: chemical symbol or atom index (0..), spin_moment: in Bohr magneton
+    # spin_state: 'hs' (high-spin), 'ls' (low-spin), 'is' (intermediate-spin)
+    return if atom.nil?
+
+    if atom.is_a?(Integer)
+      raise "Atom index out of range, number of atoms: #{@number_of_atoms}" if atom >= @number_of_atoms
+
+      unless spin_moment.nil?
+        @local_spin[atom] = spin_moment
+        @totspin += spin_moment
+      end
+    elsif atom.is_a?(String)
+      raise "Not including #{atom.capitalize}" unless @chem.include?(atom.capitalize)
+
+      index = @chem.index(atom.capitalize)
+      if !spin_moment.nil?
+        @local_spin[index] = spin_moment
+        @totspin += spin_moment
+      elsif !atomic_spin(atom, spin_state).nil?
+        @local_spin[index] = atomic_spin(atom, spin_state)
+        @totspin += atomic_spin(atom, spin_state)
+      end
+    end
   end
 
   def parameters(**kwargs)
@@ -162,20 +183,36 @@ class Siesta
     @parah = fdf_ctrl.fdf_parameters
   end
 
-def init_spin(moments)
-  # input: the array of local spin moment in Bohr magneton
-  non_zero_moments = moments.each_with_index.select { |moment, index| moment.abs > 1e-6 }
-  spinblock = <<~BLOCK
-    %block DM.InitSpin
-    #{non_zero_moments.map { |moment, index| "#{index + 1} #{moment}" }.join("\n")}
-    %endblock DM.InitSpin
-  BLOCK
-  @blocks << spinblock
-end
+  def atomic_spin(atom, spin_state)
+    spin = {
+      Mn: { 'hs' => 5.0, 'ls' => 1.0 },
+      Fe: { 'hs' => 4.0, 'ls' => 0.0, 'is' => 2.0 },
+      Co: { 'hs' => 3.0, 'ls' => 1.0 },
+      Ni: { 'hs' => 2.0 }
+    }
+    spin[atom.capitalize.to_sym][spin_state.downcase]
+  end
+
+  def init_spin(spin_moments)
+    # input: the array of local spin moment in Bohr magneton
+    non_zero_spin = spin_moments.each_with_index.select { |m, _index| m.abs > 1e-6 }
+
+    return if non_zero_spin.empty?
+
+    spinblock = <<~BLOCK
+      %block DM.InitSpin
+      #{non_zero_spin.map { |m, i| "#{i + 1} #{m}" }.join("\n")}
+      %endblock DM.InitSpin
+    BLOCK
+    @blocks << spinblock
+  end
+
   def default_option
     @blocks = []
+    @local_spin = [0.0] * @number_of_atoms
     @parah = Fdf.default_parameters
     @vdW_correction = false
+    @totspin = 0.0
     xc('pz')
     update_file
   end
@@ -197,6 +234,8 @@ end
   end
 
   def write_blocks
+    init_spin(@local_spin)
+
     File.open(@fdf_file, 'a') do |file|
       @blocks.each do |block|
         file.puts block
@@ -211,6 +250,7 @@ end
      'SaveBaderCharge', 'Slab.DipoleCorrection'].each do |key|
       @parah.delete(key) unless @parah[key]
     end
+    fdf_input({ 'Spin.Total' => @totspin }) if @parah['Spin.Fix'] && @totspin.abs > 1e-6
     File.open(@fdf_file, 'a') do |file|
       @parah.each do |key, value|
         file.puts "#{key}   #{value}"
