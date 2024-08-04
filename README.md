@@ -25,7 +25,7 @@ Here's an example of how to use the project:
 require 'siesta'
 
 # Create a new Siesta instance from a file
-siesta = Siesta.import_from_file('input.STRUCT_OUT') # Supports *.vasp (*poscar*), *.xyz files
+siesta = Siesta.import_from_file('input.STRUCT_OUT') # Supports *.STRUCT_OUT, *.vasp (*poscar*), *.xyz files
 
 # Set the label for the simulation
 siesta.label('silicon')
