@@ -1,4 +1,3 @@
-
 # Siesta
 ---------------
 
@@ -43,7 +42,7 @@ siesta.kpoint(kmesh: [9, 9, 9])
 energy = siesta.energy
 
 # Print the result
-puts "Total energy: #{energy} eV" #=> Total energy: -214.178136 eV
+puts "Total energy: #{energy} eV" #=> Total energy: -214.148814 eV
 ```
 
 ### Note

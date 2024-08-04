@@ -1,0 +1,41 @@
+SystemLabel   silicon
+NumberOfAtoms   2
+NumberOfSpecies   1
+LatticeConstant   1.0 Ang
+%block LatticeVectors
+     0.00000000      2.71500000      2.71500000
+     2.71500000      0.00000000      2.71500000
+     2.71500000      2.71500000      0.00000000
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat   Ang
+%block ChemicalSpeciesLabel
+  1   14   Si
+%endblock ChemicalSpeciesLabel
+
+%block AtomicCoordinatesAndAtomicSpecies
+     0.00000000      0.00000000      0.00000000   1
+     1.35750000      1.35750000      1.35750000   1
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+PAO.BasisSize   DZP
+PAO.EnergyShift   0.02 Ry
+Mesh.Cutoff   300 Ry
+WriteMullikenPop   0
+SCF.Mixer.Weight   0.25
+SCF.Mixer.History   2
+SCF.DM.Tolerance   0.0001
+SCF.H.Converge   true
+SCF.H.Tolerance   1.0 meV
+MaxSCFIterations   1000
+OccupationFunction   FD
+OccupationMPOrder   1
+ElectronicTemperature   300 K
+XC.Functional   GGA
+XC.Authors   PBE
+
+%block kgrid_Monkhorst_Pack
+     9    0    0   0.0
+     0    9    0   0.0
+     0    0    9   0.0
+%endblock kgrid_Monkhorst_Pack

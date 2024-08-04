@@ -247,7 +247,8 @@ class Siesta
     @parah.delete('NetCharge') if @parah['NetCharge'].abs < 1e-6
     @parah.delete('SCF.Mixer.Kick') if @parah['SCF.Mixer.Kick'].zero?
     ['SaveElectrostaticPotential', 'MullikenInSCF', 'Write.Denchar',
-     'SaveBaderCharge', 'Slab.DipoleCorrection'].each do |key|
+     'SaveBaderCharge', 'Slab.DipoleCorrection', 'WriteCoorXmol',
+     'DM.UseSaveDM'].each do |key|
       @parah.delete(key) unless @parah[key]
     end
     fdf_input({ 'Spin.Total' => @totspin }) if @parah['Spin.Fix'] && @totspin.abs > 1e-6
