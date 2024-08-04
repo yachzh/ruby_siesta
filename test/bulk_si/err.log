@@ -2,9 +2,9 @@ Loaded suite siesta_testdrive
 Started
 Job completed
 .
-Finished in 8.604665 seconds.
+Finished in 7.705266 seconds.
 -------------------------------------------------------------------------------
 1 tests, 1 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
 100% passed
 -------------------------------------------------------------------------------
-0.12 tests/s, 0.12 assertions/s
+0.13 tests/s, 0.13 assertions/s

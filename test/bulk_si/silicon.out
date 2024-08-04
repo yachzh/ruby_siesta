@@ -9,7 +9,7 @@ NetCDF support
 NetCDF-4 support
 
 * Running on 4 nodes in parallel
->> Start of run:  26-JUL-2024  11:52:11
+>> Start of run:   4-AUG-2024  23:12:57
 
                            ***********************       
                            *  WELCOME TO SIESTA  *       
@@ -113,57 +113,57 @@ SPLIT: Orbitals with angular momentum L= 0
 SPLIT: Basis orbitals for state 3s
 
 SPLIT: PAO cut-off radius determined from an
-SPLIT: energy shift=  0.003675 Ry
+SPLIT: energy shift=  0.020000 Ry
 
    izeta = 1
                  lambda =    1.000000
-                     rc =    6.116033
-                 energy =   -0.795454
-                kinetic =    0.531829
-    potential(screened) =   -1.327283
-       potential(ionic) =   -3.775182
+                     rc =    5.007352
+                 energy =   -0.779804
+                kinetic =    0.585544
+    potential(screened) =   -1.365349
+       potential(ionic) =   -3.844139
 
    izeta = 2
-                 rmatch =    4.530823
+                 rmatch =    4.418952
               splitnorm =    0.150000
-                 energy =   -0.699841
-                kinetic =    0.856832
-    potential(screened) =   -1.556673
-       potential(ionic) =   -4.130660
+                 energy =   -0.680710
+                kinetic =    0.898456
+    potential(screened) =   -1.579166
+       potential(ionic) =   -4.162544
 
 SPLIT: Orbitals with angular momentum L= 1
 
 SPLIT: Basis orbitals for state 3p
 
 SPLIT: PAO cut-off radius determined from an
-SPLIT: energy shift=  0.003675 Ry
+SPLIT: energy shift=  0.020000 Ry
 
    izeta = 1
                  lambda =    1.000000
-                     rc =    7.853192
-                 energy =   -0.302273
-                kinetic =    0.797877
-    potential(screened) =   -1.100150
-       potential(ionic) =   -3.306497
+                     rc =    6.270866
+                 energy =   -0.287480
+                kinetic =    0.877699
+    potential(screened) =   -1.165179
+       potential(ionic) =   -3.426628
 
    izeta = 2
-                 rmatch =    5.397360
+                 rmatch =    5.007352
               splitnorm =    0.150000
-                 energy =   -0.227764
-                kinetic =    1.170766
-    potential(screened) =   -1.398530
-       potential(ionic) =   -3.815039
+                 energy =   -0.192533
+                kinetic =    1.274192
+    potential(screened) =   -1.466725
+       potential(ionic) =   -3.923077
 
 POLgen: Perturbative polarization orbital with L=  2
 
 POLgen: Polarization orbital for state 3p
 
    izeta = 1
-                     rc =    7.853192
-                 energy =    0.332337
-                kinetic =    1.086757
-    potential(screened) =   -0.754420
-       potential(ionic) =   -2.712483
+                     rc =    6.270866
+                 energy =    0.432971
+                kinetic =    1.296204
+    potential(screened) =   -0.863233
+       potential(ionic) =   -2.929353
 atom: Total number of Sankey-type orbitals: 13
 
 atm_pop: Valence configuration (for local Pseudopot. screening):
@@ -171,7 +171,7 @@ atm_pop: Valence configuration (for local Pseudopot. screening):
  3p( 2.00)                                                            
 Vna: chval, zval:    4.00000   4.00000
 
-Vna:  Cut-off radius for the neutral-atom potential:   7.853192
+Vna:  Cut-off radius for the neutral-atom potential:   6.270866
 
 atom: _________________________________________________________________________
 
@@ -186,10 +186,10 @@ PAO.BasisType split
 %block PAO.Basis                 # Define Basis set
 Si                    2                    # Species label, number of l-shells
  n=3   0   2                         # n, l, Nzeta 
-   6.116      4.531   
+   5.007      4.419   
    1.000      1.000   
  n=3   1   2 P   1                   # n, l, Nzeta, Polarization, NzetaPol
-   7.853      5.397   
+   6.271      5.007   
    1.000      1.000   
 %endblock PAO.Basis
 
@@ -207,8 +207,6 @@ siesta: System type = bulk
 
 initatomlists: Number of atoms, orbitals, and projectors:      2    26    32
 
-coxmol: Writing XMOL coordinates into file silicon.xyz                                                         
-
 siesta: ******************** Simulation parameters ****************************
 siesta:
 siesta: The following are some of the parameters of the simulation.
@@ -222,12 +220,12 @@ redata: Spin spiral                                 = F
 redata: Long output                                 =   F
 redata: Number of Atomic Species                    =        1
 redata: Charge density info will appear in .RHO file
-redata: Write Mulliken Pop.                         = Atomic and Orbital charges
+redata: Write Mulliken Pop.                         = NO
 redata: Matel table size (NRTAB)                    =     1024
-redata: Mesh Cutoff                                 =   200.0000 Ry
+redata: Mesh Cutoff                                 =   300.0000 Ry
 redata: Net charge of the system                    =     0.0000 |e|
 redata: Min. number of SCF Iter                     =        0
-redata: Max. number of SCF Iter                     =     2000
+redata: Max. number of SCF Iter                     =     1000
 redata: SCF convergence failure will abort job
 redata: SCF mix quantity                            = Hamiltonian
 redata: Mix DM or H after convergence               =   F
@@ -248,17 +246,17 @@ redata: Hamiltonian tolerance for SCF               =     0.001000 eV
 redata: Require (free) Energy convergence for SCF   =   F
 redata: (free) Energy tolerance for SCF             =     0.000100 eV
 redata: Using Saved Data (generic)                  =   F
-redata: Use continuation files for DM               =   T
+redata: Use continuation files for DM               =   F
 redata: Neglect nonoverlap interactions             =   F
 redata: Method of Calculation                       = Diagonalization
-redata: Electronic Temperature                      =   999.9927 K
+redata: Electronic Temperature                      =   299.9978 K
 redata: Fix the spin of the system                  =   F
 redata: Dynamics option                             = Single-point calculation
 mix.SCF: Pulay mixing                            = Pulay
 mix.SCF:    Variant                              = stable
-mix.SCF:    History steps                        = 5
-mix.SCF:    Linear mixing weight                 =     0.010000
-mix.SCF:    Mixing weight                        =     0.010000
+mix.SCF:    History steps                        = 2
+mix.SCF:    Linear mixing weight                 =     0.250000
+mix.SCF:    Mixing weight                        =     0.250000
 mix.SCF:    SVD condition                        = 0.1000E-07
 redata: Save all siesta data in one NC              =   F
 redata: ***********************************************************************
@@ -273,9 +271,9 @@ redata: ***********************************************************************
   variant stable
 
   # Mixing options
-  weight 0.0100
-  weight.linear 0.0100
-  history 5
+  weight 0.2500
+  weight.linear 0.2500
+  history 2
 %endblock SCF.Mixer.Pulay
 
 DM_history_depth set to one: no extrapolation allowed by default for geometry relaxation
@@ -338,90 +336,86 @@ outcell: Cell angles (23,13,12) (deg):     60.0000     60.0000     60.0000
 outcell: Cell volume (Ang**3)        :     40.0258
 <dSpData1D:S at geom step 0
   <sparsity:sparsity for geom step 0
-    nrows_g=26 nrows=7 sparsity=17.4216 nnzs=11777, refcount: 7>
-  <dData1D:(new from dSpData1D) n=11777, refcount: 1>
+    nrows_g=26 nrows=7 sparsity=14.6701 nnzs=9917, refcount: 7>
+  <dData1D:(new from dSpData1D) n=9917, refcount: 1>
 refcount: 1>
 new_DM -- step:     1
 Initializing Density Matrix...
-
-Attempting to read DM from file... Failed...
 DM filled with atomic data:
 <dSpData2D:DM initialized from atoms
   <sparsity:sparsity for geom step 0
-    nrows_g=26 nrows=7 sparsity=17.4216 nnzs=11777, refcount: 8>
-  <dData2D:DM n=11777 m=1, refcount: 1>
+    nrows_g=26 nrows=7 sparsity=14.6701 nnzs=9917, refcount: 8>
+  <dData2D:DM n=9917 m=1, refcount: 1>
 refcount: 1>
-No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      35     365
+No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      29     305
 New grid distribution:   1
-           1       1:   15    1:    8    1:    8
-           2       1:   15    1:    8    9:   15
-           3       1:   15    9:   15    1:    8
-           4       1:   15    9:   15    9:   15
+           1       1:   18    1:    9    1:    9
+           2       1:   18    1:    9   10:   18
+           3       1:   18   10:   18    1:    9
+           4       1:   18   10:   18   10:   18
 
-InitMesh: MESH =    30 x    30 x    30 =       27000
-InitMesh: (bp) =    15 x    15 x    15 =        3375
-InitMesh: Mesh cutoff (required, used) =   200.000   253.085 Ry
-ExtMesh (bp) on 0 =    95 x    88 x    88 =      735680
+InitMesh: MESH =    36 x    36 x    36 =       46656
+InitMesh: (bp) =    18 x    18 x    18 =        5832
+InitMesh: Mesh cutoff (required, used) =   300.000   364.442 Ry
+ExtMesh (bp) on 0 =    98 x    89 x    89 =      776258
 New grid distribution:   2
-           1       1:   15    1:    7    1:    7
-           2       1:   15    1:    7    8:   15
-           3       1:   15    8:   15    1:    7
-           4       1:   15    8:   15    8:   15
+           1       1:   18    1:   10    1:   10
+           2       1:   18    1:   10   11:   18
+           3       1:   18   11:   18    1:   10
+           4       1:   18   11:   18   11:   18
 New grid distribution:   3
-           1       1:   15    1:    8    1:    8
-           2       1:   15    1:    8    9:   15
-           3       1:   15    9:   15    1:    8
-           4       1:   15    9:   15    9:   15
+           1       1:   18    1:    9    1:    9
+           2       1:   18    1:    9   10:   18
+           3       1:   18   10:   18    1:    9
+           4       1:   18   10:   18   10:   18
 Setting up quadratic distribution...
-ExtMesh (bp) on 0 =    95 x    87 x    87 =      719055
-PhiOnMesh: Number of (b)points on node 0 =                  735
-PhiOnMesh: nlist on node 0 =               116848
+ExtMesh (bp) on 0 =    98 x    90 x    90 =      793800
+PhiOnMesh: Number of (b)points on node 0 =                 1800
+PhiOnMesh: nlist on node 0 =               145543
 
-stepf: Methfessel-Paxton step function
-       Using Hermite-Gauss polynomials of order  4
+stepf: Fermi-Dirac step function
 
 siesta: Program's energy decomposition (eV):
-siesta: Ebs     =       -85.579882
-siesta: Eions   =       377.610450
-siesta: Ena     =       115.966558
-siesta: Ekin    =        82.596716
-siesta: Enl     =        28.049713
+siesta: Ebs     =       -75.089324
+siesta: Eions   =       377.610449
+siesta: Ena     =       112.762046
+siesta: Ekin    =        82.398449
+siesta: Enl     =        28.424248
 siesta: Eso     =         0.000000
 siesta: Edftu   =         0.000000
-siesta: DEna    =         0.169793
-siesta: DUscf   =         0.481645
+siesta: DEna    =         3.359960
+siesta: DUscf   =         0.287240
 siesta: DUext   =         0.000000
-siesta: Exc     =       -65.223449
+siesta: Exc     =       -65.171663
 siesta: eta*DQ  =         0.000000
 siesta: Emadel  =         0.000000
 siesta: Emeta   =         0.000000
 siesta: Emolmec =         0.000000
 siesta: Ekinion =         0.000000
-siesta: Eharris =      -211.740268
-siesta: Etot    =      -215.569474
-siesta: FreeEng =      -215.569459
+siesta: Eharris =      -215.959582
+siesta: Etot    =      -215.550168
+siesta: FreeEng =      -215.550168
 
         iscf     Eharris(eV)        E_KS(eV)     FreeEng(eV)     dDmax    Ef(eV) dHmax(eV)
-   scf:    1     -211.740268     -215.569474     -215.569459  1.726236 -5.973897  0.513516
-timer: Routine,Calls,Time,% = IterSCF        1       1.475  75.30
-   scf:    2     -215.570737     -215.570106     -215.570092  0.001120 -5.968993  0.507033
-   scf:    3     -215.614411     -215.594950     -215.594950  0.082376 -5.450680  0.004776
-   scf:    4     -215.594933     -215.594942     -215.594941  0.000820 -5.261450  0.010050
-   scf:    5     -215.594978     -215.594961     -215.594960  0.003811 -5.449947  0.000031
-mix: Pulay -- inversion failed, > SVD [rank/size] 2 / 4
-   scf:    6     -215.594961     -215.594961     -215.594960  0.000004 -5.449940  0.000031
+   scf:    1     -215.959582     -215.550168     -215.550168  1.822097 -4.117515  0.200243
+timer: Routine,Calls,Time,% = IterSCF        1       1.297  75.93
+   scf:    2     -215.554371     -215.552311     -215.552311  0.004516 -4.083392  0.136520
+   scf:    3     -215.555695     -215.554206     -215.554207  0.009623 -4.007894  0.002942
+   scf:    4     -215.554211     -215.554209     -215.554209  0.000182 -4.007549  0.002228
+   scf:    5     -215.554215     -215.554212     -215.554212  0.000505 -4.006500  0.000273
+   scf:    6     -215.554212     -215.554212     -215.554212  0.000003 -4.006435  0.000206
 
 SCF Convergence by DM+H criterion
-max |DM_out - DM_in|         :     0.0000041989
-max |H_out - H_in|      (eV) :     0.0000310883
+max |DM_out - DM_in|         :     0.0000029842
+max |H_out - H_in|      (eV) :     0.0002058908
 SCF cycle converged after 6 iterations
 
 Using DM_out to compute the final energy and forces
-No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      35     365
+No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      29     305
 
-siesta: E_KS(eV) =             -215.5950
+siesta: E_KS(eV) =             -215.5542
 
-siesta: E_KS - E_eggbox =      -215.5950
+siesta: E_KS - E_eggbox =      -215.5542
 
 siesta: Atomic forces (eV/Ang):
 ----------------------------------------
@@ -432,74 +426,59 @@ siesta: Atomic forces (eV/Ang):
 ----------------------------------------
    Max    0.000000    constrained
 
-Stress tensor Voigt[x,y,z,yz,xz,xy] (kbar):       -6.46       -6.46       -6.46        0.00        0.00        0.00
-(Free)E + p*V (eV/cell)     -215.4335
-Target enthalpy (eV/cell)     -215.5950
-
-mulliken: Atomic and Orbital Populations:
-
-Species: Si                  
-Atom  Qatom  Qorb
-               3s      3s      3py     3pz     3px     3py     3pz     3px     
-               3Pdxy   3Pdyz   3Pdz2   3Pdxz   3Pdx2-y2
-   1  4.000   0.635   0.576   0.213   0.213   0.213   0.540   0.540   0.540
-              0.126   0.126   0.076   0.126   0.076
-   2  4.000   0.634   0.576   0.214   0.214   0.214   0.539   0.539   0.539
-              0.126   0.126   0.076   0.126   0.076
-
-mulliken: Qtot =        8.000
-
-coxmol: Writing XMOL coordinates into file silicon.xyz                                                         
+Stress tensor Voigt[x,y,z,yz,xz,xy] (kbar):        9.39        9.39        9.39        0.00        0.00        0.00
+(Free)E + p*V (eV/cell)     -215.7887
+Target enthalpy (eV/cell)     -215.5542
 
 siesta: Program's energy decomposition (eV):
-siesta: Ebs     =       -86.264315
-siesta: Eions   =       377.610450
-siesta: Ena     =       115.966558
-siesta: Ekin    =        81.573308
-siesta: Enl     =        27.794284
+siesta: Ebs     =       -75.353050
+siesta: Eions   =       377.610449
+siesta: Ena     =       112.762046
+siesta: Ekin    =        81.990842
+siesta: Enl     =        28.369448
 siesta: Eso     =         0.000000
 siesta: Edftu   =         0.000000
-siesta: DEna    =         1.233415
-siesta: DUscf   =         0.383671
+siesta: DEna    =         3.725260
+siesta: DUscf   =         0.265604
 siesta: DUext   =         0.000000
-siesta: Exc     =       -64.935749
+siesta: Exc     =       -65.056963
 siesta: eta*DQ  =         0.000000
 siesta: Emadel  =         0.000000
 siesta: Emeta   =         0.000000
 siesta: Emolmec =         0.000000
 siesta: Ekinion =         0.000000
-siesta: Eharris =      -215.594961
-siesta: Etot    =      -215.594961
-siesta: FreeEng =      -215.594960
+siesta: Eharris =      -215.554212
+siesta: Etot    =      -215.554212
+siesta: FreeEng =      -215.554212
 
 siesta: Final energy (eV):
-siesta:  Band Struct. =     -86.264315
-siesta:       Kinetic =      81.573308
-siesta:       Hartree =      14.440090
+siesta:  Band Struct. =     -75.353050
+siesta:       Kinetic =      81.990842
+siesta:       Hartree =      14.797040
 siesta:       Edftu   =       0.000000
 siesta:       Eso     =       0.000000
 siesta:    Ext. field =       0.000000
-siesta:   Exch.-corr. =     -64.935749
-siesta:  Ion-electron =    -112.015162
-siesta:       Ion-ion =    -134.657448
+siesta:   Exch.-corr. =     -65.056963
+siesta:  Ion-electron =    -102.075917
+siesta:       Ion-ion =    -145.209214
 siesta:       Ekinion =       0.000000
-siesta:         Total =    -215.594961
-siesta:         Fermi =      -5.449940
+siesta:         Total =    -215.554212
+siesta:         Fermi =      -4.006435
 
 siesta: Stress tensor (static) (eV/Ang**3):
-siesta:    -0.004034    0.000000    0.000000
-siesta:     0.000000   -0.004034    0.000000
-siesta:     0.000000    0.000000   -0.004034
+siesta:     0.005859    0.000000    0.000000
+siesta:     0.000000    0.005859    0.000000
+siesta:     0.000000    0.000000    0.005859
 
 siesta: Cell volume =         40.025752 Ang**3
 
 siesta: Pressure (static):
 siesta:                Solid            Molecule  Units
-siesta:           0.00004394          0.00004394  Ry/Bohr**3
-siesta:           0.00403442          0.00403442  eV/Ang**3
-siesta:           6.46392604          6.46392603  kBar
-(Free)E+ p_basis*V_orbitals  =        -213.351560
-(Free)Eharris+ p_basis*V_orbitals  =        -213.351560
+siesta:          -0.00006381         -0.00006381  Ry/Bohr**3
+siesta:          -0.00585884         -0.00585884  eV/Ang**3
+siesta:          -9.38699731         -9.38699732  kBar
+(Free)E+ p_basis*V_orbitals  =        -214.267093
+(Free)Eharris+ p_basis*V_orbitals  =        -214.267093
 
 cite: Please see "silicon.bib" for an exhaustive BiBTeX file.
 cite: Please clearly indicate Siesta version in published work: 4.1.5
@@ -508,5 +487,5 @@ cite: which are encouraged to be cited in a published work.
         Primary SIESTA paper
           DOI: www.doi.org/10.1088/0953-8984/14/11/302
 
->> End of run:  26-JUL-2024  11:52:19
+>> End of run:   4-AUG-2024  23:13:04
 Job completed

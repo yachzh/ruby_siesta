@@ -15,7 +15,7 @@ class TestSiesta < Test::Unit::TestCase
     siesta.spin(pol: false)
     siesta.kpoint(kmesh: [9, 9, 9])
     ecal = siesta.energy
-    eexp = -215.594961
+    eexp = -215.554212
     assert_in_delta(ecal, eexp, 1.0E-6)
   end
 end

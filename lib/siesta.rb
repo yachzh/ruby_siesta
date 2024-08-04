@@ -193,7 +193,7 @@ class Siesta
     spin[atom.capitalize.to_sym][spin_state.downcase]
   end
 
-  def init_spin(spin_moments)
+  def config_init_spin(spin_moments)
     # input: the array of local spin moment in Bohr magneton
     non_zero_spin = spin_moments.each_with_index.select { |m, _index| m.abs > 1e-6 }
 
@@ -201,7 +201,7 @@ class Siesta
 
     spinblock = <<~BLOCK
       %block DM.InitSpin
-      #{non_zero_spin.map { |m, i| "#{i + 1} #{m}" }.join("\n")}
+      #{non_zero_spin.map { |m, i| "#{format('%5d', i + 1)} #{format('%5.1f', m).sub(/0$/,'')}" }.join("\n")}
       %endblock DM.InitSpin
     BLOCK
     @blocks << spinblock
@@ -234,7 +234,7 @@ class Siesta
   end
 
   def write_blocks
-    init_spin(@local_spin)
+    config_init_spin(@local_spin)
 
     File.open(@fdf_file, 'a') do |file|
       @blocks.each do |block|
@@ -251,7 +251,7 @@ class Siesta
      'DM.UseSaveDM'].each do |key|
       @parah.delete(key) unless @parah[key]
     end
-    fdf_input({ 'Spin.Total' => @totspin }) if @parah['Spin.Fix'] && @totspin.abs > 1e-6
+    fdf_input({ 'Spin.Total' => @totspin.to_i }) if @parah['Spin.Fix'] && @totspin.abs > 1e-6
     File.open(@fdf_file, 'a') do |file|
       @parah.each do |key, value|
         file.puts "#{key}   #{value}"
