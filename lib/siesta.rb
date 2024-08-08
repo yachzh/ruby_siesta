@@ -74,6 +74,24 @@ class Siesta
     fdf_input(spinpar)
   end
 
+  def plus_u(atom: 'Fe', orbital: '3d', hubbard_u: 4.0)
+    orb = %w[s p d f]
+    n = orbital[0] # principal quantum number
+    l = orb.index(orbital[-1].downcase) # angular quantum number
+
+    ldauproj_lines = [
+      "  #{atom.capitalize}  1",
+      "  n=#{n}  #{l}",
+      "  #{format('%4.2f', hubbard_u)}  0.0",
+      '  0.0  0.0'
+    ]
+
+    @ldauproj_block ||= [
+      '%block DFTU.Proj'
+    ]
+    @ldauproj_block += ldauproj_lines
+  end
+
   def initial_spin(atom: nil, spin_moment: nil, spin_state: nil)
     # atom: chemical symbol or atom index (0..), spin_moment: in Bohr magneton
     # spin_state: 'hs' (high-spin), 'ls' (low-spin), 'is' (intermediate-spin)
@@ -116,7 +134,6 @@ class Siesta
   end
 
   # ExternalElectricField
-  # todo set Hubbard U
   # todo write pdos
   # todo geometry optimization
   # aimd setup
@@ -201,10 +218,17 @@ class Siesta
 
     spinblock = <<~BLOCK
       %block DM.InitSpin
-      #{non_zero_spin.map { |m, i| "#{format('%5d', i + 1)} #{format('%5.1f', m).sub(/0$/,'')}" }.join("\n")}
+      #{non_zero_spin.map { |m, i| "#{format('%5d', i + 1)} #{format('%5.1f', m).sub(/0$/, '')}" }.join("\n")}
       %endblock DM.InitSpin
     BLOCK
     @blocks << spinblock
+  end
+
+  def config_lda_plus_u
+    return unless @ldauproj_block && @ldauproj_block.size > 1
+
+    @ldauproj_block << '%endblock DFTU.Proj'
+    @blocks << @ldauproj_block  # Append @ldauproj_block to @blocks
   end
 
   def default_option
@@ -235,10 +259,11 @@ class Siesta
 
   def write_blocks
     config_init_spin(@local_spin)
-
+    config_lda_plus_u
     File.open(@fdf_file, 'a') do |file|
       @blocks.each do |block|
         file.puts block
+        file.puts ''
       end
     end
   end
