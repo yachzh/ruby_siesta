@@ -1,15 +1,16 @@
 Siesta Version  : 4.1.5
-Architecture    : arm64
-Compiler version: GNU Fortran (Homebrew GCC 12.2.0) 12.2.0
-Compiler flags  : mpif90 -O2 -fPIC -ftree-vectorize -fallow-argument-mismatch
-PP flags        : -DCDF -DNCDF -DNCDF_4 -DMPI -DFC_HAVE_ABORT
-Libraries       : libncdf.a libfdict.a -L/opt/homebrew/lib -lnetcdff -lnetcdf -lhdf5_hl -lhdf5  -lz -lscalapack -L/opt/homebrew/opt/openblas/lib -lopenblas
+Architecture    : x86_64_openmpi
+Compiler version: GNU Fortran (GCC) 12.2.0
+Compiler flags  : /work/home/yachzh/.local/apps/openmpi-4.1.4/bin/mpif90 -O3 -fPIC -ftree-vectoorize -march=x86-64 -fallow-argument-mismatch
+PP flags        : -DFC_HAVE_ABORT -DMPI -DSIESTA__FLOOK -DCDF -DNCDF -DNCDF_4
+Libraries       :  libfdict.a libncdf.a libfdict.a  -lflookall -ldl -lnetcdff -lnetcdf -lhdf5_hhl -lhdf5 -lz -lopenblas_nonthreaded -lscalapack
 PARALLEL version
 NetCDF support
 NetCDF-4 support
+Lua support
 
 * Running on 4 nodes in parallel
->> Start of run:   4-AUG-2024  22:03:53
+>> Start of run:   8-AUG-2024  15:53:35
 
                            ***********************       
                            *  WELCOME TO SIESTA  *       
@@ -396,17 +397,17 @@ siesta: Etot    =      -214.146937
 siesta: FreeEng =      -214.146938
 
         iscf     Eharris(eV)        E_KS(eV)     FreeEng(eV)     dDmax    Ef(eV) dHmax(eV)
-   scf:    1     -214.664679     -214.146937     -214.146938  1.824522 -3.896974  0.207769
-timer: Routine,Calls,Time,% = IterSCF        1       1.319  76.26
-   scf:    2     -214.148815     -214.147890     -214.147890  0.004355 -3.858518  0.147383
-   scf:    3     -214.149571     -214.148812     -214.148812  0.010483 -3.763713  0.001791
-   scf:    4     -214.148813     -214.148812     -214.148813  0.000042 -3.763314  0.001345
-   scf:    5     -214.148814     -214.148814     -214.148814  0.000119 -3.762135  0.000062
-   scf:    6     -214.148814     -214.148814     -214.148814  0.000003 -3.762114  0.000044
+   scf:    1     -214.664679     -214.146937     -214.146938  1.824522 -3.896982  0.207769
+timer: Routine,Calls,Time,% = IterSCF        1       2.499  65.60
+   scf:    2     -214.148815     -214.147890     -214.147890  0.004355 -3.858526  0.147383
+   scf:    3     -214.149571     -214.148812     -214.148812  0.010483 -3.763720  0.001791
+   scf:    4     -214.148813     -214.148812     -214.148813  0.000042 -3.763321  0.001345
+   scf:    5     -214.148814     -214.148813     -214.148814  0.000119 -3.762129  0.000062
+   scf:    6     -214.148813     -214.148813     -214.148814  0.000003 -3.762121  0.000044
 
 SCF Convergence by DM+H criterion
 max |DM_out - DM_in|         :     0.0000027705
-max |H_out - H_in|      (eV) :     0.0000438260
+max |H_out - H_in|      (eV) :     0.0000438261
 SCF cycle converged after 6 iterations
 
 Using DM_out to compute the final energy and forces
@@ -446,8 +447,8 @@ siesta: Emadel  =         0.000000
 siesta: Emeta   =         0.000000
 siesta: Emolmec =         0.000000
 siesta: Ekinion =         0.000000
-siesta: Eharris =      -214.148814
-siesta: Etot    =      -214.148814
+siesta: Eharris =      -214.148813
+siesta: Etot    =      -214.148813
 siesta: FreeEng =      -214.148814
 
 siesta: Final energy (eV):
@@ -461,8 +462,8 @@ siesta:   Exch.-corr. =     -65.433502
 siesta:  Ion-electron =    -100.226573
 siesta:       Ion-ion =    -145.235897
 siesta:       Ekinion =       0.000000
-siesta:         Total =    -214.148814
-siesta:         Fermi =      -3.762114
+siesta:         Total =    -214.148813
+siesta:         Fermi =      -3.762121
 
 siesta: Stress tensor (static) (eV/Ang**3):
 siesta:    -0.018327   -0.000001   -0.000001
@@ -475,7 +476,7 @@ siesta: Pressure (static):
 siesta:                Solid            Molecule  Units
 siesta:           0.00019960          0.00019960  Ry/Bohr**3
 siesta:           0.01832685          0.01832681  eV/Ang**3
-siesta:          29.36316909         29.36310757  kBar
+siesta:          29.36317041         29.36310889  kBar
 (Free)E+ p_basis*V_orbitals  =        -212.861694
 (Free)Eharris+ p_basis*V_orbitals  =        -212.861694
 
@@ -486,5 +487,5 @@ cite: which are encouraged to be cited in a published work.
         Primary SIESTA paper
           DOI: www.doi.org/10.1088/0953-8984/14/11/302
 
->> End of run:   4-AUG-2024  22:04:01
+>> End of run:   8-AUG-2024  15:53:52
 Job completed

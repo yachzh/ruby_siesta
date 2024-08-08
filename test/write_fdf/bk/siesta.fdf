@@ -61,5 +61,5 @@ Spin.Fix   true
 Spin.Total   4
 
 %block DM.InitSpin
-   21  4.
+   21   4.
 %endblock DM.InitSpin
