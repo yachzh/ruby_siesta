@@ -5,4 +5,6 @@ require 'phys'
 
 energy_in_ev = 10
 energy_in_kj_per_mol = energy_in_ev / (PHYS::kJ / PHYS::mol)
+energy_in_j_per_mol = energy_in_ev / (PHYS::J / PHYS::mol)
 puts "Energy in kJ/mol: #{energy_in_kj_per_mol}"
+puts "Energy in J/mol: #{energy_in_j_per_mol}"

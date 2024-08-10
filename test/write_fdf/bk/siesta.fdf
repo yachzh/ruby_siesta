@@ -58,8 +58,16 @@ XC.Functional   LDA
 XC.Authors   PZ
 Spin   polarized
 Spin.Fix   true
-Spin.Total   2
+Spin.Total   4
 
 %block DM.InitSpin
-   21   2.
+   21   4.
 %endblock DM.InitSpin
+
+%block DFTU.Proj
+  Fe  1
+  n=3  2
+  4.00  0.0
+  0.0  0.0
+%endblock DFTU.Proj
+

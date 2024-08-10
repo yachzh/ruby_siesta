@@ -100,9 +100,12 @@ class Siesta
     if atom.is_a?(Integer)
       raise "Atom index out of range, number of atoms: #{@number_of_atoms}" if atom >= @number_of_atoms
 
-      unless spin_moment.nil?
+      if !spin_moment.nil?
         @local_spin[atom] = spin_moment
         @totspin += spin_moment
+      elsif !atomic_spin(@chem[atom].capitalize, spin_state).nil?
+        @local_spin[atom] = atomic_spin(@chem[atom].capitalize, spin_state)
+        @totspin += atomic_spin(@chem[atom].capitalize, spin_state)
       end
     elsif atom.is_a?(String)
       raise "Not including #{atom.capitalize}" unless @chem.include?(atom.capitalize)
@@ -134,6 +137,7 @@ class Siesta
   end
 
   # ExternalElectricField
+  # write band structures
   # todo write pdos
   # todo geometry optimization
   # aimd setup
@@ -181,7 +185,7 @@ class Siesta
   end
 
   def energy
-    run_siesta
+    run_siesta unless File.exist?(@ofile)
     last_line = nil
     File.foreach(@ofile) do |line|
       last_line = line if line.include?('Total =')
@@ -228,7 +232,7 @@ class Siesta
     return unless @ldauproj_block && @ldauproj_block.size > 1
 
     @ldauproj_block << '%endblock DFTU.Proj'
-    @blocks << @ldauproj_block  # Append @ldauproj_block to @blocks
+    @blocks << @ldauproj_block # Append @ldauproj_block to @blocks
   end
 
   def default_option
@@ -258,8 +262,8 @@ class Siesta
   end
 
   def write_blocks
-    config_init_spin(@local_spin)
-    config_lda_plus_u
+    config_init_spin(@local_spin) unless configured?('DM.InitSpin')
+    config_lda_plus_u unless configured?('DFTU.Proj')
     File.open(@fdf_file, 'a') do |file|
       @blocks.each do |block|
         file.puts block
@@ -268,9 +272,22 @@ class Siesta
     end
   end
 
+  def configured?(block_name)
+    @blocks.each do |block|
+      if block.is_a?(String)
+        return true if block.include?(block_name)
+      elsif block.is_a?(Array)
+        block.each do |str|
+          return true if str.include?(block_name)
+        end
+      end
+    end
+    false
+  end
+
   def write_parah
-    @parah.delete('NetCharge') if @parah['NetCharge'].abs < 1e-6
-    @parah.delete('SCF.Mixer.Kick') if @parah['SCF.Mixer.Kick'].zero?
+    @parah.delete('NetCharge') if @parah['NetCharge'].nil? || @parah['NetCharge'].abs < 1e-6
+    @parah.delete('SCF.Mixer.Kick') if @parah['SCF.Mixer.Kick'].nil? || @parah['SCF.Mixer.Kick'].zero?
     ['SaveElectrostaticPotential', 'MullikenInSCF', 'Write.Denchar',
      'SaveBaderCharge', 'Slab.DipoleCorrection', 'WriteCoorXmol',
      'DM.UseSaveDM'].each do |key|

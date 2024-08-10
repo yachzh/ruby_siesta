@@ -1,4 +1,4 @@
-SystemLabel   siesta
+SystemLabel   LDA-U4.0-hs
 NumberOfAtoms   21
 NumberOfSpecies   3
 LatticeConstant   1.0 Ang
@@ -39,14 +39,14 @@ AtomicCoordinatesFormat   Ang
      2.52134815      4.41445729     10.59491632   3
 %endblock AtomicCoordinatesAndAtomicSpecies
 
-PAO.BasisSize   TZP
+PAO.BasisSize   DZP
 PAO.EnergyShift   50 meV
 Mesh.Cutoff   200 Ry
 WriteMullikenPop   1
 WriteCoorXmol   true
-SCF.Mixer.Weight   0.07
+SCF.Mixer.Weight   0.03
 SCF.Mixer.History   5
-SCF.DM.Tolerance   0.0001
+SCF.DM.Tolerance   5.0e-06
 SCF.H.Converge   true
 SCF.H.Tolerance   1.0 meV
 MaxSCFIterations   2000

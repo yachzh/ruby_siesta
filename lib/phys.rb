@@ -20,4 +20,8 @@ module PHYS
   def self.mol
     AVOGADRO_CONSTANT
   end
+
+  def self.J
+    J
+  end
 end
