@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PHYS
+module Phys
   ELEMENTARY_CHARGE = 1.6021766208e-19 # C
   AVOGADRO_CONSTANT = 6.022140857e23 # mol^-1
   J = 1 / ELEMENTARY_CHARGE

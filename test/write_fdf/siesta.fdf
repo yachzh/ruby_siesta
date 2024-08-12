@@ -1,6 +1,6 @@
 SystemLabel   siesta
-NumberOfAtoms   21
-NumberOfSpecies   3
+NumberOfAtoms   22
+NumberOfSpecies   4
 LatticeConstant   1.0 Ang
 %block LatticeVectors
     10.22450100      0.00000000      0.00000000
@@ -13,6 +13,7 @@ AtomicCoordinatesFormat   Ang
   1    6   C
   2    1   H
   3   26   Fe
+  4   58   Ce
 %endblock ChemicalSpeciesLabel
 
 %block AtomicCoordinatesAndAtomicSpecies
@@ -37,6 +38,7 @@ AtomicCoordinatesFormat   Ang
      3.95735037      2.63903323     12.51674953   2
      4.96412136      5.16589191     12.36326456   2
      2.52134815      4.41445729     10.59491632   3
+     3.03257320      5.29992464     12.72112176   4
 %endblock AtomicCoordinatesAndAtomicSpecies
 
 PAO.BasisSize   TZP
@@ -60,6 +62,12 @@ Spin   polarized
 Spin.Fix   true
 Spin.Total   4
 
+%block kgrid_Monkhorst_Pack
+     1    0    0   0.0
+     0    1    0   0.0
+     0    0    1   0.0
+%endblock kgrid_Monkhorst_Pack
+
 %block DM.InitSpin
    21   4.
 %endblock DM.InitSpin
@@ -67,7 +75,11 @@ Spin.Total   4
 %block DFTU.Proj
   Fe  1
   n=3  2
-  4.00  0.0
+  4.50  0.0
+  0.0  0.0
+  Ce  1
+  n=4  3
+  6.00  0.0
   0.0  0.0
 %endblock DFTU.Proj
 

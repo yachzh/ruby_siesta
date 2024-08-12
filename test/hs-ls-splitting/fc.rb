@@ -28,6 +28,6 @@ energies = {}
   resultfile.puts "#{state} #{format('%14.6f', energy)} Walltime: #{format('%10s', walltime)}"
 end
 
-e_hl = (energies['hs'] - energies['ls']) / (PHYS::kJ / PHYS::mol)
+e_hl = (energies['hs'] - energies['ls']) / (Phys::kJ / Phys::mol)
 resultfile.puts "E_hl = #{format('%5.1f', e_hl)} kJ/mol"
 resultfile.close

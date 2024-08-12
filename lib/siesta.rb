@@ -79,17 +79,12 @@ class Siesta
     n = orbital[0] # principal quantum number
     l = orb.index(orbital[-1].downcase) # angular quantum number
 
-    ldauproj_lines = [
+    @hubbard_u[atom.capitalize] = [
       "  #{atom.capitalize}  1",
       "  n=#{n}  #{l}",
       "  #{format('%4.2f', hubbard_u)}  0.0",
       '  0.0  0.0'
     ]
-
-    @ldauproj_block ||= [
-      '%block DFTU.Proj'
-    ]
-    @ldauproj_block += ldauproj_lines
   end
 
   def initial_spin(atom: nil, spin_moment: nil, spin_state: nil)
@@ -154,7 +149,7 @@ class Siesta
         #{k3.map { |x| x.to_s.rjust(4) }.join(' ')}   #{dk}
       %endblock kgrid_Monkhorst_Pack
     BLOCK
-    @blocks << kgrid
+    @blocks['kpoint'] = kgrid
   end
 
   def write_fdf(vector: true)
@@ -214,9 +209,8 @@ class Siesta
     spin[atom.capitalize.to_sym][spin_state.downcase]
   end
 
-  def config_init_spin(spin_moments)
-    # input: the array of local spin moment in Bohr magneton
-    non_zero_spin = spin_moments.each_with_index.select { |m, _index| m.abs > 1e-6 }
+  def config_init_spin
+    non_zero_spin = @local_spin.each_with_index.select { |m, _index| m.abs > 1e-6 }
 
     return if non_zero_spin.empty?
 
@@ -225,19 +219,24 @@ class Siesta
       #{non_zero_spin.map { |m, i| "#{format('%5d', i + 1)} #{format('%5.1f', m).sub(/0$/, '')}" }.join("\n")}
       %endblock DM.InitSpin
     BLOCK
-    @blocks << spinblock
+    @blocks['spin'] = spinblock
   end
 
   def config_lda_plus_u
-    return unless @ldauproj_block && @ldauproj_block.size > 1
+    return if @hubbard_u.empty?
 
-    @ldauproj_block << '%endblock DFTU.Proj'
-    @blocks << @ldauproj_block # Append @ldauproj_block to @blocks
+    ldauproj_block = <<~BLOCK
+      %block DFTU.Proj
+      #{@hubbard_u.values.flatten.join("\n")}
+      %endblock DFTU.Proj
+    BLOCK
+    @blocks['ldau'] = ldauproj_block
   end
 
   def default_option
-    @blocks = []
+    @blocks = {}
     @local_spin = [0.0] * @number_of_atoms
+    @hubbard_u = {}
     @parah = Fdf.default_parameters
     @vdW_correction = false
     @totspin = 0.0
@@ -262,27 +261,16 @@ class Siesta
   end
 
   def write_blocks
-    config_init_spin(@local_spin) unless configured?('DM.InitSpin')
-    config_lda_plus_u unless configured?('DFTU.Proj')
+    config_init_spin
+    config_lda_plus_u
+    return if @blocks.empty?
+
     File.open(@fdf_file, 'a') do |file|
-      @blocks.each do |block|
+      @blocks.each_value do |block|
         file.puts block
         file.puts ''
       end
     end
-  end
-
-  def configured?(block_name)
-    @blocks.each do |block|
-      if block.is_a?(String)
-        return true if block.include?(block_name)
-      elsif block.is_a?(Array)
-        block.each do |str|
-          return true if str.include?(block_name)
-        end
-      end
-    end
-    false
   end
 
   def write_parah
