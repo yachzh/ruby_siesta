@@ -7,13 +7,9 @@ dft = Siesta.import_from_file('hs.STRUCT_OUT')
 dft.parameters(basis: 'TZP', meshcutoff: '200 Ry', temperature: '1000 K')
 dft.spin(pol: true, fixspin: true)
 dft.initial_spin(atom: 'fe', spin_state: 'hs')
-dft.plus_u(atom: 'fe', orbital: '3d', hubbard_u: 4.0)
-dft.kpoint
-dft.plus_u(atom: 'ce', orbital: '4f', hubbard_u: 6.0)
+dft.pdos
+#dft.plus_u(atom: 'ce', orbital: '4f', hubbard_u: 6.0)
 
 #dft.kpoint
 # dft.plus_d2
-dft.write_fdf
-dft.plus_u(atom: 'fe', orbital: '3d', hubbard_u: 4.5)
-
 dft.write_fdf

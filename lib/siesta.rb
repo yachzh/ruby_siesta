@@ -3,6 +3,7 @@
 require 'cell'
 require 'struct_reader'
 require 'fdf'
+require 'phys'
 
 # call siesta from Ruby
 class Siesta
@@ -150,6 +151,28 @@ class Siesta
       %endblock kgrid_Monkhorst_Pack
     BLOCK
     @blocks['kpoint'] = kgrid
+  end
+
+  def pdos(emin: -20.0, emax: 10.0, sigma: nil, ngrid: 3000)
+    if sigma.nil?
+      electronic_temperature = @parah['ElectronicTemperature']
+      if !electronic_temperature.nil?
+        unit = electronic_temperature.split.last
+        number = electronic_temperature.split.first.to_f
+        raise 'unrecognized electronic temperature unit!' unless unit == 'K'
+
+        sigma = 2 * number * Phys.kB
+
+      else
+        sigma = 0.2
+      end
+    end
+    pdos_block = <<~BLOCK
+      %block ProjectedDensityOfStates
+      #{format('%8.2f', emin)}#{format('%7.2f', emax)}#{format('%7.3f', sigma)}#{format('%6d', ngrid)}  eV
+      %endblock ProjectedDensityOfStates
+    BLOCK
+    @blocks['pdos'] = pdos_block
   end
 
   def write_fdf(vector: true)
