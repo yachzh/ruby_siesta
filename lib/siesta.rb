@@ -134,7 +134,6 @@ class Siesta
 
   # ExternalElectricField
   # write band structures
-  # todo write pdos
   # todo geometry optimization
   # aimd setup
 
