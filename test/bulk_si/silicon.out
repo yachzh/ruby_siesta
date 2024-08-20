@@ -1,15 +1,15 @@
 Siesta Version  : 4.1.5
-Architecture    : arm64
-Compiler version: GNU Fortran (Homebrew GCC 12.2.0) 12.2.0
-Compiler flags  : mpif90 -O2 -fPIC -ftree-vectorize -fallow-argument-mismatch
-PP flags        : -DCDF -DNCDF -DNCDF_4 -DMPI -DFC_HAVE_ABORT
-Libraries       : libncdf.a libfdict.a -L/opt/homebrew/lib -lnetcdff -lnetcdf -lhdf5_hl -lhdf5  -lz -lscalapack -L/opt/homebrew/opt/openblas/lib -lopenblas
-PARALLEL version
+Architecture    : x86_64
+Compiler version: GNU Fortran (GCC) 13.2.1 20240316 (Red Hat 13.2.1-7)
+Compiler flags  : gfortran -O2 -fPIC -ftree-vectorize -fallow-argument-mismatch
+PP flags        : -DFC_HAVE_ABORT -DCDF -DNCDF -DNCDF_4 -DSIESTA__DIAG_2STAGE -DSIESTA__MRRR
+Libraries       : libsiestaLAPACK.a libsiestaBLAS.a libncdf.a libfdict.a -lnetcdff -lnetcdf -lhhdf5_hl -lhdf5 -lz
+SERIAL version
 NetCDF support
 NetCDF-4 support
 
-* Running on 4 nodes in parallel
->> Start of run:   4-AUG-2024  23:12:57
+* Running in serial mode
+>> Start of run:  20-AUG-2024  10:03:23
 
                            ***********************       
                            *  WELCOME TO SIESTA  *       
@@ -280,12 +280,6 @@ DM_history_depth set to one: no extrapolation allowed by default for geometry re
 Size of DM history Fstack: 1
 Total number of electrons:     8.000000
 Total ionic charge:     8.000000
-
-* ProcessorY, Blocksize:    2   7
-
-
-* Orbital distribution balance (max,min):     7     5
-
  Kpoints in:          405 . Kpoints trimmed:          365
 
 siesta: k-grid: Number of k-points =   365
@@ -296,10 +290,6 @@ siesta: k-grid:    0   9   0      0.000
 siesta: k-grid:    0   0   9      0.000
 
 diag: Algorithm                                     = D&C
-diag: Parallel over k                               =   F
-diag: Use parallel 2D distribution                  =   T
-diag: Parallel block-size                           = 7
-diag: Parallel distribution                         =     2 x     2
 diag: Used triangular part                          = Lower
 diag: Absolute tolerance                            =  0.100E-15
 diag: Orthogonalization factor                      =  0.100E-05
@@ -336,42 +326,27 @@ outcell: Cell angles (23,13,12) (deg):     60.0000     60.0000     60.0000
 outcell: Cell volume (Ang**3)        :     40.0258
 <dSpData1D:S at geom step 0
   <sparsity:sparsity for geom step 0
-    nrows_g=26 nrows=7 sparsity=14.6701 nnzs=9917, refcount: 7>
-  <dData1D:(new from dSpData1D) n=9917, refcount: 1>
+    nrows_g=26 nrows=26 sparsity=58.9024 nnzs=39818, refcount: 7>
+  <dData1D:(new from dSpData1D) n=39818, refcount: 1>
 refcount: 1>
 new_DM -- step:     1
 Initializing Density Matrix...
 DM filled with atomic data:
 <dSpData2D:DM initialized from atoms
   <sparsity:sparsity for geom step 0
-    nrows_g=26 nrows=7 sparsity=14.6701 nnzs=9917, refcount: 8>
-  <dData2D:DM n=9917 m=1, refcount: 1>
+    nrows_g=26 nrows=26 sparsity=58.9024 nnzs=39818, refcount: 8>
+  <dData2D:DM n=39818 m=1, refcount: 1>
 refcount: 1>
-No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      29     305
+No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      38     305
 New grid distribution:   1
-           1       1:   18    1:    9    1:    9
-           2       1:   18    1:    9   10:   18
-           3       1:   18   10:   18    1:    9
-           4       1:   18   10:   18   10:   18
+           1       1:   18    1:   18    1:   18
 
 InitMesh: MESH =    36 x    36 x    36 =       46656
 InitMesh: (bp) =    18 x    18 x    18 =        5832
 InitMesh: Mesh cutoff (required, used) =   300.000   364.442 Ry
-ExtMesh (bp) on 0 =    98 x    89 x    89 =      776258
-New grid distribution:   2
-           1       1:   18    1:   10    1:   10
-           2       1:   18    1:   10   11:   18
-           3       1:   18   11:   18    1:   10
-           4       1:   18   11:   18   11:   18
-New grid distribution:   3
-           1       1:   18    1:    9    1:    9
-           2       1:   18    1:    9   10:   18
-           3       1:   18   10:   18    1:    9
-           4       1:   18   10:   18   10:   18
-Setting up quadratic distribution...
-ExtMesh (bp) on 0 =    98 x    90 x    90 =      793800
-PhiOnMesh: Number of (b)points on node 0 =                 1800
-PhiOnMesh: nlist on node 0 =               145543
+ExtMesh (bp) on 0 =    98 x    98 x    98 =      941192
+PhiOnMesh: Number of (b)points on node 0 =                 5832
+PhiOnMesh: nlist on node 0 =               498794
 
 stepf: Fermi-Dirac step function
 
@@ -380,7 +355,7 @@ siesta: Ebs     =       -75.089324
 siesta: Eions   =       377.610449
 siesta: Ena     =       112.762046
 siesta: Ekin    =        82.398449
-siesta: Enl     =        28.424248
+siesta: Enl     =        28.424249
 siesta: Eso     =         0.000000
 siesta: Edftu   =         0.000000
 siesta: DEna    =         3.359960
@@ -397,13 +372,13 @@ siesta: Etot    =      -215.550168
 siesta: FreeEng =      -215.550168
 
         iscf     Eharris(eV)        E_KS(eV)     FreeEng(eV)     dDmax    Ef(eV) dHmax(eV)
-   scf:    1     -215.959582     -215.550168     -215.550168  1.822097 -4.117515  0.200243
-timer: Routine,Calls,Time,% = IterSCF        1       1.297  75.93
-   scf:    2     -215.554371     -215.552311     -215.552311  0.004516 -4.083392  0.136520
+   scf:    1     -215.959582     -215.550168     -215.550168  1.822097 -4.117520  0.200243
+timer: Routine,Calls,Time,% = IterSCF        1       1.486  49.05
+   scf:    2     -215.554371     -215.552311     -215.552311  0.004516 -4.083397  0.136520
    scf:    3     -215.555695     -215.554206     -215.554207  0.009623 -4.007894  0.002942
    scf:    4     -215.554211     -215.554209     -215.554209  0.000182 -4.007549  0.002228
-   scf:    5     -215.554215     -215.554212     -215.554212  0.000505 -4.006500  0.000273
-   scf:    6     -215.554212     -215.554212     -215.554212  0.000003 -4.006435  0.000206
+   scf:    5     -215.554214     -215.554212     -215.554212  0.000505 -4.006500  0.000273
+   scf:    6     -215.554212     -215.554212     -215.554212  0.000003 -4.006433  0.000206
 
 SCF Convergence by DM+H criterion
 max |DM_out - DM_in|         :     0.0000029842
@@ -411,7 +386,7 @@ max |H_out - H_in|      (eV) :     0.0002058908
 SCF cycle converged after 6 iterations
 
 Using DM_out to compute the final energy and forces
-No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      29     305
+No. of atoms with KB's overlaping orbs in proc 0. Max # of overlaps:      38     305
 
 siesta: E_KS(eV) =             -215.5542
 
@@ -419,7 +394,7 @@ siesta: E_KS - E_eggbox =      -215.5542
 
 siesta: Atomic forces (eV/Ang):
 ----------------------------------------
-   Tot    0.000000    0.000000    0.000000
+   Tot   -0.000000   -0.000000    0.000000
 ----------------------------------------
    Max    0.000000
    Res    0.000000    sqrt( Sum f_i^2 / 3N )
@@ -463,7 +438,7 @@ siesta:  Ion-electron =    -102.075917
 siesta:       Ion-ion =    -145.209214
 siesta:       Ekinion =       0.000000
 siesta:         Total =    -215.554212
-siesta:         Fermi =      -4.006435
+siesta:         Fermi =      -4.006433
 
 siesta: Stress tensor (static) (eV/Ang**3):
 siesta:     0.005859    0.000000    0.000000
@@ -476,7 +451,7 @@ siesta: Pressure (static):
 siesta:                Solid            Molecule  Units
 siesta:          -0.00006381         -0.00006381  Ry/Bohr**3
 siesta:          -0.00585884         -0.00585884  eV/Ang**3
-siesta:          -9.38699731         -9.38699732  kBar
+siesta:          -9.38699866         -9.38699867  kBar
 (Free)E+ p_basis*V_orbitals  =        -214.267093
 (Free)Eharris+ p_basis*V_orbitals  =        -214.267093
 
@@ -487,5 +462,64 @@ cite: which are encouraged to be cited in a published work.
         Primary SIESTA paper
           DOI: www.doi.org/10.1088/0953-8984/14/11/302
 
->> End of run:   4-AUG-2024  23:13:04
+
+timer: Elapsed wall time (sec) =      10.404
+timer: CPU execution times (sec):
+
+Routine            Calls   Time/call    Tot.time        %
+siesta                 1      10.359      10.359   100.00
+Setup                  1       0.124       0.124     1.20
+bands                  1       0.000       0.000     0.00
+KSV_init               1       0.000       0.000     0.00
+IterGeom               1      10.227      10.227    98.73
+state_init             1       0.130       0.130     1.26
+hsparse                1       0.007       0.007     0.07
+overlap                1       0.109       0.109     1.05
+Setup_H0               1       1.289       1.289    12.44
+naefs                  2       0.000       0.000     0.00
+MolMec                 2       0.000       0.000     0.00
+kinefsm                2       0.055       0.111     1.07
+nlefsm                 2       0.382       0.765     7.38
+DHSCF_Init             1       0.645       0.645     6.22
+DHSCF1                 1       0.041       0.041     0.40
+INITMESH               1       0.000       0.000     0.00
+DHSCF2                 1       0.604       0.604     5.83
+REMESH                 1       0.114       0.114     1.10
+REORD                 24       0.000       0.002     0.02
+PHION                  1       0.448       0.448     4.33
+COMM_BSC              35       0.000       0.002     0.02
+POISON                 9       0.002       0.017     0.16
+fft                   18       0.001       0.011     0.11
+IterSCF                6       1.250       7.500    72.40
+setup_H                7       0.282       1.977    19.08
+DHSCF                  8       0.380       3.041    29.36
+DHSCF3                 8       0.282       2.257    21.79
+rhoofd                 8       0.156       1.248    12.04
+XC                     8       0.017       0.135     1.30
+GXC-CellXC             8       0.017       0.134     1.29
+cellXC                 8       0.017       0.134     1.29
+vmat                   8       0.107       0.854     8.24
+compute_dm             6       0.920       5.519    53.27
+diagon                 6       0.920       5.518    53.27
+c-eigval            2190       0.001       1.964    18.96
+c-buildHS           2190       0.001       1.795    17.33
+cdiag               4380       0.000       0.526     5.08
+cdiag1              4380       0.000       0.036     0.35
+cdiag2              4380       0.000       0.076     0.73
+cdiag3              4380       0.000       0.386     3.72
+c-eigvec            2190       0.001       2.164    20.89
+cdiag4              2190       0.000       0.009     0.09
+c-buildD            2190       0.001       1.377    13.29
+MIXER                  5       0.000       0.002     0.02
+PostSCF                1       1.306       1.306    12.61
+DHSCF4                 1       0.784       0.784     7.57
+dfscf                  1       0.741       0.741     7.15
+overfsm                1       0.008       0.008     0.08
+state_analysis         1       0.000       0.000     0.00
+siesta_move            1       0.000       0.000     0.00
+Analysis               1       0.007       0.007     0.07
+siesta_analysis        1       0.007       0.007     0.07
+optical                1       0.000       0.000     0.00
+  
+>> End of run:  20-AUG-2024  10:03:33
 Job completed

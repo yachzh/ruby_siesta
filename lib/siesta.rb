@@ -174,6 +174,17 @@ class Siesta
     @blocks['pdos'] = pdos_block
   end
 
+  def eef(ex: 0.0, ey: 0.0, ez: 0.0)
+    return if ex.abs < 1e-6 && ey.abs < 1e-6 && ez.abs < 1e-6
+
+    eef_block = <<~BLOCK
+      %block ExternalElectricField
+      #{format('%7.3f', ex)}#{format('%7.3f', ey)}#{format('%7.3f', ez)} V/Ang
+      %endblock ExternalElectricField
+    BLOCK
+    @blocks['eef'] = eef_block
+  end
+
   def write_fdf(vector: true)
     File.open(@fdf_file, 'w') do |file|
       file.puts "SystemLabel   #{@syslabel}"
