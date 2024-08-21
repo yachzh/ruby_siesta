@@ -132,7 +132,6 @@ class Siesta
     fdf_input(fdfpar)
   end
 
-  # ExternalElectricField
   # write band structures
   # todo geometry optimization
   # aimd setup
@@ -179,10 +178,13 @@ class Siesta
 
     eef_block = <<~BLOCK
       %block ExternalElectricField
-      #{format('%7.3f', ex)}#{format('%7.3f', ey)}#{format('%7.3f', ez)} V/Ang
+      #{format('%8.3f', ex)}#{format('%8.3f', ey)}#{format('%8.3f', ez)}  V/Ang
       %endblock ExternalElectricField
     BLOCK
     @blocks['eef'] = eef_block
+  end
+  def bands(bandpath: nil,xk: nil,ngrid: 420)
+    label_k=
   end
 
   def write_fdf(vector: true)

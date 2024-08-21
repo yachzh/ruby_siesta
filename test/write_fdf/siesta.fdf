@@ -62,9 +62,9 @@ Spin   polarized
 Spin.Fix   true
 Spin.Total   4
 
-%block ProjectedDensityOfStates
-  -20.00  10.00  0.172  3000  eV
-%endblock ProjectedDensityOfStates
+%block ExternalElectricField
+   0.000   0.000   0.500  V/Ang
+%endblock ExternalElectricField
 
 %block DM.InitSpin
    21   4.

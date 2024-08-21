@@ -62,6 +62,10 @@ Spin   polarized
 Spin.Fix   true
 Spin.Total   4
 
+%block ExternalElectricField
+  0.000  0.000  0.500 V/Ang
+%endblock ExternalElectricField
+
 %block DM.InitSpin
    21   4.
 %endblock DM.InitSpin
