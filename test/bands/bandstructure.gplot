@@ -1,4 +1,0 @@
-set xtics ("Gamma"  0.000000, "M"  0.831229, "K"  1.450544, "Gamma"  2.233450, "A"  3.064680, "L"  3.895909, "H"  4.515223, "A"  5.298130)
-plot "bandstructure" using 1:2:3 with lines lc variable
-# -- Use line below for single-color
-#plot "bandstructure" with lines
