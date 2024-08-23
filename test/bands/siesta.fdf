@@ -1,0 +1,13 @@
+SystemLabel   siesta
+NumberOfAtoms   4
+NumberOfSpecies   2
+LatticeConstant   1.0 Ang
+%block LatticeVectors
+     3.19500000      0.00000000      0.00000000
+    -1.59750000      2.76695117      0.00000000
+     0.00000000      0.00000000      5.21741315
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat   Ang
+%block ChemicalSpeciesLabel
+  1   31   Ga

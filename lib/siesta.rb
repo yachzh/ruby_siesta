@@ -183,8 +183,25 @@ class Siesta
     BLOCK
     @blocks['eef'] = eef_block
   end
-  def bands(bandpath: nil,xk: nil,ngrid: 420)
-    label_k=
+
+  def bands(bandpath: nil, xk: nil, ngrid: 420)
+    label_k = []
+    bandpath.each_char do |k|
+      label_k << if k == 'G'
+                   '\\Gamma'
+                 else
+                   k
+                 end
+    end
+    npoints = generate_npoints(bandpath, ngrid)
+
+    bands_block = []
+    bands_block << '%block BandLines'
+    npoints.zip(xk, label_k).each do |np, kc, lb|
+      bands_block << "#{format('%3d', np)}  #{kc.map { |x| '%6.3f' % x }.join(' ')}  #{lb}"
+    end
+    bands_block << '%endblock BandLines'
+    @blocks['bands'] = bands_block
   end
 
   def write_fdf(vector: true)
@@ -242,6 +259,19 @@ class Siesta
       Ni: { 'hs' => 2.0 }
     }
     spin[atom.capitalize.to_sym][spin_state.downcase]
+  end
+
+  def generate_npoints(bp, ngrid)
+    raise 'Error: bp cannot be nil' if bp.nil?
+
+    num_of_bandlines = bp.split('').length - 1
+    puts "Number of band lines #{num_of_bandlines}"
+    np_per_line = ngrid / num_of_bandlines
+    puts "Number of points per line #{np_per_line}"
+    npoints = [1]
+    (num_of_bandlines - 1).times { npoints << np_per_line }
+    npoints << ngrid - np_per_line * (num_of_bandlines - 1)
+    npoints
   end
 
   def config_init_spin
