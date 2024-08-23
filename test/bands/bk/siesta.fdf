@@ -36,8 +36,6 @@ OccupationMPOrder   1
 ElectronicTemperature   300 K
 XC.Functional   LDA
 XC.Authors   PZ
-WriteKbands   true
-WriteBands   true
 
 %block kgrid_Monkhorst_Pack
      9    0    0   0.0

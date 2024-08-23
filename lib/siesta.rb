@@ -185,6 +185,8 @@ class Siesta
   end
 
   def bands(bandpath: nil, xk: nil, ngrid: 420)
+    return if bandpath.nil?
+
     label_k = []
     bandpath.each_char do |k|
       label_k << if k == 'G'
@@ -202,6 +204,7 @@ class Siesta
     end
     bands_block << '%endblock BandLines'
     @blocks['bands'] = bands_block
+    fdf_input({ 'WriteKbands' => true, 'WriteBands' => true })
   end
 
   def write_fdf(vector: true)
