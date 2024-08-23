@@ -21,4 +21,4 @@ dft.xc('LDA')
 dft.kpoint(kmesh: [9, 9, 9])
 dft.bands(bandpath: kpath, xk: xk, ngrid: 350)
 dft.write_fdf
-# dft.energy
+dft.energy
