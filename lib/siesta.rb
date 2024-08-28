@@ -132,7 +132,6 @@ class Siesta
     fdf_input(fdfpar)
   end
 
-  # write band structures
   # todo geometry optimization
   # aimd setup
 
@@ -235,7 +234,8 @@ class Siesta
   end
 
   def energy
-    run_siesta unless File.exist?(@ofile)
+    run_siesta
+    # run_siesta unless File.exist?(@ofile)
     last_line = nil
     File.foreach(@ofile) do |line|
       last_line = line if line.include?('Total =')

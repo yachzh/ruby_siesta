@@ -18,7 +18,7 @@ xk = rb_array.map { |a| a.map(&:to_f) }
 
 dft = Siesta.new(DataIO.atoms2struct(geom))
 dft.xc('LDA')
-dft.kpoint(kmesh: [9, 9, 9])
+dft.kpoint(kmesh: [15, 15, 15])
 dft.bands(bandpath: kpath, xk: xk, ngrid: 350)
 dft.write_fdf
 dft.energy
