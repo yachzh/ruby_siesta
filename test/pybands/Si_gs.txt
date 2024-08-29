@@ -256,3 +256,71 @@ Fermi level: 5.49835
 Gap: 0.625 eV
 Transition (v -> c):
   (s=0, k=0, n=3, [0.00, 0.00, 0.00]) -> (s=0, k=56, n=4, [0.40, 0.40, 0.00])
+Writing to Si_gs.gpw (mode='')
+
+Timing:                              incl.     excl.
+-----------------------------------------------------------
+Hamiltonian:                         0.071     0.000   0.0% |
+ Atomic:                             0.056     0.000   0.0% |
+  XC Correction:                     0.056     0.056   0.0% |
+ Calculate atomic Hamiltonians:      0.001     0.001   0.0% |
+ Communicate:                        0.000     0.000   0.0% |
+ Initialize Hamiltonian:             0.000     0.000   0.0% |
+ Poisson:                            0.000     0.000   0.0% |
+ XC 3D grid:                         0.013     0.013   0.0% |
+LCAO initialization:                 0.914     0.012   0.0% |
+ LCAO eigensolver:                   0.082     0.003   0.0% |
+  Calculate projections:             0.002     0.002   0.0% |
+  DenseAtomicCorrection:             0.008     0.008   0.0% |
+  Distribute overlap matrix:         0.001     0.001   0.0% |
+  Orbital Layouts:                   0.011     0.011   0.0% |
+  Potential matrix:                  0.040     0.040   0.0% |
+  Sum over cells:                    0.018     0.018   0.0% |
+ LCAO to grid:                       0.496     0.496   0.1% |
+ Set positions (LCAO WFS):           0.323     0.043   0.0% |
+  Basic WFS set positions:           0.001     0.001   0.0% |
+  Basis functions set positions:     0.000     0.000   0.0% |
+  P tci:                             0.135     0.135   0.0% |
+  ST tci:                            0.135     0.135   0.0% |
+  mktci:                             0.009     0.009   0.0% |
+PWDescriptor:                        0.017     0.017   0.0% |
+SCF-cycle:                          27.265     0.265   0.0% |
+ Davidson:                          23.791     2.472   0.3% |
+  Apply H:                           4.762     4.655   0.5% |
+   HMM T:                            0.107     0.107   0.0% |
+  Subspace diag:                     5.312     0.077   0.0% |
+   calc_h_matrix:                    4.928     0.221   0.0% |
+    Apply H:                         4.707     4.592   0.5% |
+     HMM T:                          0.116     0.116   0.0% |
+   diagonalize:                      0.169     0.169   0.0% |
+   rotate_psi:                       0.138     0.138   0.0% |
+  calc. matrices:                   10.680     1.351   0.2% |
+   Apply H:                          9.330     9.120   1.0% |
+    HMM T:                           0.210     0.210   0.0% |
+  diagonalize:                       0.348     0.348   0.0% |
+  rotate_psi:                        0.218     0.218   0.0% |
+ Density:                            2.288     0.000   0.0% |
+  Atomic density matrices:           0.044     0.044   0.0% |
+  Mix:                               0.035     0.035   0.0% |
+  Multipole moments:                 0.001     0.001   0.0% |
+  Pseudo density:                    2.208     2.127   0.2% |
+   Symmetrize density:               0.081     0.081   0.0% |
+ Hamiltonian:                        0.854     0.005   0.0% |
+  Atomic:                            0.685     0.005   0.0% |
+   XC Correction:                    0.681     0.681   0.1% |
+  Calculate atomic Hamiltonians:     0.010     0.010   0.0% |
+  Communicate:                       0.000     0.000   0.0% |
+  Poisson:                           0.002     0.002   0.0% |
+  XC 3D grid:                        0.152     0.152   0.0% |
+ Orthonormalize:                     0.067     0.006   0.0% |
+  calc_s_matrix:                     0.013     0.013   0.0% |
+  inverse-cholesky:                  0.021     0.021   0.0% |
+  projections:                       0.023     0.023   0.0% |
+  rotate_psi_s:                      0.005     0.005   0.0% |
+Set symmetry:                        0.144     0.144   0.0% |
+Other:                             869.562   869.562  96.8% |--------------------------------------|
+-----------------------------------------------------------
+Total:                                       897.974 100.0%
+
+Memory usage: 583.72 MiB
+Date: Thu Aug 29 11:53:08 2024
