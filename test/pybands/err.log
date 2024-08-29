@@ -1,9 +1,0 @@
-/home/yachzh/.local/packages/anaconda3/lib/python3.10/site-packages/ase/dft/kpoints.py:357: UserWarning: Please do not use (kpts, x, X) = bandpath(...).  Use path = bandpath(...) and then kpts = path.kpts and (x, X, labels) = path.get_linear_kpoint_axis().
-  warnings.warn('Please do not use (kpts, x, X) = bandpath(...).  '
-Band gap: 0.8650 eV
-Traceback (most recent call last):
-  File "/home/yachzh/work/ruby_siesta/test/pybands/bandstructure_si.py", line 69, in <module>
-    calc.atoms.get_potential_energy()
-  File "/home/yachzh/.local/packages/anaconda3/lib/python3.10/site-packages/ase/atoms.py", line 726, in get_potential_energy
-    raise RuntimeError('Atoms object has no calculator.')
-RuntimeError: Atoms object has no calculator.
