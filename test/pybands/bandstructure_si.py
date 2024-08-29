@@ -27,7 +27,7 @@ with open('result.txt', 'w') as resultfile:
     calc = GPAW(mode=PW(400),
                 xc='PBE',
                 kpts=(8, 8, 8),
-                # random guess (needed if many onoccupied bands required)
+                # random guess (needed if many unoccupied bands required)
                 random=True,
                 occupations=FermiDirac(0.01),
                 txt='Si_gs.txt')
