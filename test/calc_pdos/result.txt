@@ -1,0 +1,3 @@
+hs   -2507.030935 Walltime:     0:0:40
+ls   -2507.776686 Walltime:     0:0:16
+E_hl =  72.0 kJ/mol

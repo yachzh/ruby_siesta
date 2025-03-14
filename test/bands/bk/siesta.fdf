@@ -1,0 +1,56 @@
+SystemLabel   siesta
+NumberOfAtoms   4
+NumberOfSpecies   2
+LatticeConstant   1.0 Ang
+%block LatticeVectors
+     3.19500000      0.00000000      0.00000000
+    -1.59750000      2.76695117      0.00000000
+     0.00000000      0.00000000      5.21741315
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat   Ang
+%block ChemicalSpeciesLabel
+  1   31   Ga
+  2    7   N
+%endblock ChemicalSpeciesLabel
+
+%block AtomicCoordinatesAndAtomicSpecies
+     0.00000000      0.00000000      0.00000000   1
+     0.00000000      1.84463411      0.65217664   2
+     0.00000000      1.84463411      2.60870658   1
+     0.00000000      0.00000000      3.26088322   2
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+PAO.BasisSize   DZP
+PAO.EnergyShift   0.02 Ry
+Mesh.Cutoff   300 Ry
+WriteMullikenPop   0
+SCF.Mixer.Weight   0.25
+SCF.Mixer.History   2
+SCF.DM.Tolerance   0.0001
+SCF.H.Converge   true
+SCF.H.Tolerance   1.0 meV
+MaxSCFIterations   1000
+OccupationFunction   FD
+OccupationMPOrder   1
+ElectronicTemperature   300 K
+XC.Functional   LDA
+XC.Authors   PZ
+
+%block kgrid_Monkhorst_Pack
+     9    0    0   0.0
+     0    9    0   0.0
+     0    0    9   0.0
+%endblock kgrid_Monkhorst_Pack
+
+%block BandLines
+  1   0.000  0.000  0.000  \Gamma
+ 50   0.500  0.000  0.000  M
+ 50   0.333  0.333  0.000  K
+ 50   0.000  0.000  0.000  \Gamma
+ 50   0.000  0.000  0.500  A
+ 50   0.500  0.000  0.500  L
+ 50   0.333  0.333  0.500  H
+ 50   0.000  0.000  0.500  A
+%endblock BandLines
+

@@ -1,0 +1,90 @@
+SystemName  LDA-U4.0-hs
+SystemLabel  LDA-U4.0-hs
+
+NumberOfSpecies  3
+NumberOfAtoms  21
+%block ChemicalSpecieslabel
+    1 6 C.lda.1
+    2 1 H.lda.2
+    3 26 Fe.lda.3
+%endblock ChemicalSpecieslabel
+
+%block PAO.BasisSizes
+    C.lda.1	DZP
+    H.lda.2	DZP
+    Fe.lda.3	DZP
+%endblock PAO.BasisSizes
+
+
+LatticeConstant  1.0 Ang
+%block LatticeVectors
+    10.224501000000000     0.000000000000000     0.000000000000000 
+    -5.112250500000000     8.854673479000001     0.000000000000000 
+    0.000000000000000     0.000000000000000     21.262054320000001 
+%endblock LatticeVectors
+
+
+AtomicCoordinatesFormat  Ang
+%block AtomicCoordinatesAndAtomicSpecies
+     1.940812114      3.670370888     12.572177005 1
+     3.175611051      5.190588904      8.647422542 1
+     1.596543784      5.059797240     12.544060979 1
+     2.805471104      5.809674921     12.469215507 1
+     3.525877262      3.803632201      8.668078606 1
+     2.319521788      3.046284266      8.693491481 1
+     1.747238262      5.279181506      8.668328180 1
+     1.225976770      3.952906447      8.693913767 1
+     3.367572494      3.574931312     12.504999226 1
+     3.893627339      4.897412684     12.445113353 1
+     1.234701618      2.825291114     12.672805014 2
+     3.881302659      6.040039239      8.589249306 2
+     0.573166838      5.477038459     12.593852415 2
+     2.881601277      6.912198101     12.410285831 2
+     4.552526580      3.392308648      8.651969687 2
+     2.247897619      1.942475378      8.732695882 2
+     1.153333066      6.212124134      8.646041274 2
+     0.154368885      3.677974007      8.729828290 2
+     3.957350376      2.639033225     12.516749530 2
+     4.964121368      5.165891910     12.363264564 2
+     2.521348151      4.414457285     10.594916325 3
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+%block DM.InitSpin
+    21 4.00000000000000
+%endblock DM.InitSpin
+
+DM.MixingWeight  0.07
+DM.NumberPulay  5
+DM.NumberKick  75
+MaxSCFIterations  500
+DM.Tolerance  5e-06
+SCF.H.Converge  True
+WriteMullikenPop  1
+WriteCoorXmol  True
+SpinPolarized  True
+ElectronicTemperature  0.08617330 eV
+OccupationFunction  MP
+OccupationMPOrder  4
+FixSpin  True
+TotalSpin  4.0
+SCF.H.Tolerance  0.00100000 eV
+DM.UseSaveDM  True
+%block LDAU.proj
+Fe.lda.3  1
+            n=3  2
+            4.00  0.0
+            0.0  0.0
+%endblock LDAU.proj
+MullikenInSCF  True
+XC.functional  LDA
+XC.authors  PZ
+PAO.EnergyShift  0.05000000 eV
+MeshCutoff  2721.1386 eV
+
+#KPoint grid
+%block kgrid_Monkhorst_Pack
+     1       0       0  0.0
+     0       1       0  0.0
+     0       0       1  0.0
+%endblock kgrid_Monkhorst_Pack
+

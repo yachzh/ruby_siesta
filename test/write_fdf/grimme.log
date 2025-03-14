@@ -1,0 +1,8 @@
+Number_of_species              5
+%block Chemical_species_label
+   1   26   Fe
+   2    7   N
+   3    6   C
+   4   16   S
+   5    1   H
+%endblock Chemical_species_label

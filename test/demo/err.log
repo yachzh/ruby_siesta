@@ -1,0 +1,10 @@
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   b01r3n19
+  Local device: mlx5_0
+--------------------------------------------------------------------------
+[b01r3n19:03229] 3 more processes have sent help message help-mpi-btl-openib.txt / error in device init
+[b01r3n19:03229] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
+Job completed
+Total energy: -214.148813 eV

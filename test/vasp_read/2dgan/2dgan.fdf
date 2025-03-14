@@ -1,0 +1,47 @@
+SystemLabel   2dgan
+NumberOfAtoms   2
+NumberOfSpecies   2
+LatticeConstant   1.0 Ang
+%block LatticeVectors
+     3.21800000      0.00000000      0.00000000
+    -1.60900000      2.78686975      0.00000000
+     0.00000000      0.00000000     40.00000000
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat   Ang
+%block ChemicalSpeciesLabel
+  1   31   Ga
+  2    7   N
+%endblock ChemicalSpeciesLabel
+
+%block AtomicCoordinatesAndAtomicSpecies
+     0.00000000      0.00000000     20.00000000   1
+     0.00000000      1.85791317     20.00000000   2
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+PAO.BasisSize   DZP
+PAO.EnergyShift   50 meV
+WriteMullikenPop   1
+WriteCoorXmol   true
+DM.MixingWeight   0.01
+DM.NumberPulay   5
+DM.UseSaveDM   true
+DM.Tolerance   0.0001
+MaxSCFIterations   2000
+SCF.H.Converge   true
+SCF.H.Tolerance   1.0 meV
+OccupationFunction   MP
+OccupationMPOrder   4
+XC.functional   GGA
+XC.authors   PBE
+ElectronicTemperature   1000 K
+Mesh.Cutoff   200 Ry
+Spin   non-polarized
+Spin.Fix   false
+Spin.Total   0
+
+%block kgrid_Monkhorst_Pack
+  30   0   0   0.0
+  0   30   0   0.0
+  0   0   1   0.0
+%endblock kgrid_Monkhorst_Pack

@@ -1,0 +1,73 @@
+SystemLabel   LDA-U4.0-hs
+NumberOfAtoms   21
+NumberOfSpecies   3
+LatticeConstant   1.0 Ang
+%block LatticeVectors
+    10.22450100      0.00000000      0.00000000
+    -5.11225050      8.85467348      0.00000000
+     0.00000000      0.00000000     21.26205432
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat   Ang
+%block ChemicalSpeciesLabel
+  1    6   C
+  2    1   H
+  3   26   Fe
+%endblock ChemicalSpeciesLabel
+
+%block AtomicCoordinatesAndAtomicSpecies
+     1.94081211      3.67037089     12.57217701   1
+     3.17561105      5.19058891      8.64742254   1
+     1.59654378      5.05979724     12.54406098   1
+     2.80547110      5.80967493     12.46921551   1
+     3.52587726      3.80363221      8.66807861   1
+     2.31952178      3.04628427      8.69349148   1
+     1.74723826      5.27918151      8.66832818   1
+     1.22597677      3.95290645      8.69391377   1
+     3.36757249      3.57493132     12.50499923   1
+     3.89362734      4.89741269     12.44511335   1
+     1.23470162      2.82529112     12.67280501   2
+     3.88130266      6.04003924      8.58924931   2
+     0.57316684      5.47703846     12.59385242   2
+     2.88160127      6.91219811     12.41028583   2
+     4.55252658      3.39230865      8.65196969   2
+     2.24789762      1.94247538      8.73269588   2
+     1.15333306      6.21212414      8.64604127   2
+     0.15436888      3.67797401      8.72982829   2
+     3.95735037      2.63903323     12.51674953   2
+     4.96412136      5.16589191     12.36326456   2
+     2.52134815      4.41445729     10.59491632   3
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+PAO.BasisSize   DZP
+PAO.EnergyShift   50 meV
+Mesh.Cutoff   200 Ry
+WriteMullikenPop   1
+WriteCoorXmol   true
+SCF.Mixer.Weight   0.03
+SCF.Mixer.History   5
+SCF.DM.Tolerance   5.0e-06
+SCF.H.Converge   true
+SCF.H.Tolerance   1.0 meV
+MaxSCFIterations   2000
+DM.UseSaveDM   true
+OccupationFunction   MP
+OccupationMPOrder   4
+ElectronicTemperature   1000 K
+XC.Functional   LDA
+XC.Authors   PZ
+Spin   polarized
+Spin.Fix   true
+Spin.Total   4
+
+%block DM.InitSpin
+   21   4.
+%endblock DM.InitSpin
+
+%block DFTU.Proj
+  Fe  1
+  n=3  2
+  4.00  0.0
+  0.0  0.0
+%endblock DFTU.Proj
+
