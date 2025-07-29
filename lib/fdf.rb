@@ -12,10 +12,12 @@ class Fdf
     @fdf_parameters.merge!(input_hash)
   end
 
+  # default parameters used by SIESTA program if not specified
   def self.default_parameters
     { 'PAO.BasisSize' => 'DZP',
       'PAO.EnergyShift' => '0.02 Ry',
       'Mesh.Cutoff' => '300 Ry',
+      'FilterCutoff' => '0 eV',
       'SaveElectrostaticPotential' => false,
       'WriteMullikenPop' => 0,
       'MullikenInSCF' => false,
@@ -37,10 +39,12 @@ class Fdf
       'Slab.DipoleCorrection' => false }
   end
 
+  # the real default parameters used in the simulations
   def self.custom
     { basis: ['PAO.BasisSize', 'DZP'],
       energyshift: ['PAO.EnergyShift', '50 meV'],
       meshcutoff: ['Mesh.Cutoff', '200 Ry'],
+      filtercutoff: ['FilterCutoff', '0 eV'],
       write_pot: ['SaveElectrostaticPotential', false],
       mulliken: ['WriteMullikenPop', 1],
       print_pop: ['MullikenInSCF', false],

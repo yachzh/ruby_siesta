@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'cell'
-require 'struct_reader'
-require 'fdf'
-require 'phys'
+require_relative 'cell'
+require_relative 'struct_reader'
+require_relative 'fdf'
+require_relative 'phys'
 
 # call siesta from Ruby
 class Siesta
@@ -344,6 +344,7 @@ class Siesta
   def write_parah
     @parah.delete('NetCharge') if @parah['NetCharge'].nil? || @parah['NetCharge'].abs < 1e-6
     @parah.delete('SCF.Mixer.Kick') if @parah['SCF.Mixer.Kick'].nil? || @parah['SCF.Mixer.Kick'].zero?
+    @parah.delete('FilterCutoff') if @parah['FilterCutoff'] == Fdf.default_parameters['FilterCutoff']
     ['SaveElectrostaticPotential', 'MullikenInSCF', 'Write.Denchar',
      'SaveBaderCharge', 'Slab.DipoleCorrection', 'WriteCoorXmol',
      'DM.UseSaveDM'].each do |key|
